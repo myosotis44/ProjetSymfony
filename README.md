@@ -1,1 +1,1 @@
-# ProjetSymfony
+# Projet Symfony
