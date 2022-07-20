@@ -7,3 +7,69 @@
 .sortir-navbar-light a {
     color: #000000;
 }
+
+.out-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.out-ln1-bl1 {
+    float: right;
+    font-weight: 500;
+}
+
+h5 {
+    margin: 15px 0;
+}
+
+.out-ln2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.out-ln2-bl1 {
+    width: 40%;
+}
+
+.out-ln2_bl1 {
+    padding: 5px
+}
+
+.out-ln2-bl2 {
+    width: 40%;
+    height: 150px;
+    justify-content: center;
+}
+
+.out-ln2-bl3 {
+    text-align: center;
+}
+
+.out-ln2_bl2 {
+    margin: 5px;
+}
+
+.out-ln2-bl3 button {
+    width: 150px;
+    height: 60px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+th, td {
+    border: 1px solid;
+    width: 165px;
+}
+
+.out-ln3 {
+    margin: 0 0 50px 0;
+}
+
+.out-ln4-bl1 button {
+    width: 150px;
+    height: 60px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 500;
+}
