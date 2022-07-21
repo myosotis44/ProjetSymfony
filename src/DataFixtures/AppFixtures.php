@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Participant;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -22,7 +23,7 @@ class AppFixtures extends Fixture
         $this->manager = $manager;
         $this->addCampus();
         $this->addUsers();
-        $manager->flush();
+        $this->addEtat();
     }
 
     public function __construct(UserPasswordHasherInterface $hasher){
@@ -36,6 +37,15 @@ class AppFixtures extends Fixture
             $campusObject = new Campus();
             $campusObject->setNom($campusName);
             $this->manager->persist($campusObject);
+        }
+        $this->manager->flush();
+    }
+    public function addEtat() {
+        $etatList = ['Crée','Ouverte','Clôturée','Activité en cours', 'Passées', 'Annulée'];
+        foreach ($etatList as $etatName ) {
+            $etatObj = new Etat();
+            $etatObj->setLibelle($etatName);
+            $this->manager->persist($etatObj);
         }
         $this->manager->flush();
     }
@@ -60,7 +70,7 @@ class AppFixtures extends Fixture
         $utilisateur->setRoles(["ROLE_USER"]);
         $utilisateur->setActif(true);
         $utilisateur->setCampus($this->generator->randomElement($campusList));
-        $utilisateur->setMail($this->generator->email);
+        $utilisateur->setMail("test@test.com");
         $utilisateur->setNom($this->generator->lastName);
         $utilisateur->setPrenom($this->generator->firstName);
         $utilisateur->setTelephone($this->generator->phoneNumber);

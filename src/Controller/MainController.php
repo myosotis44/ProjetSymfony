@@ -15,7 +15,8 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        return $this->redirectToRoute('app_login');
+        return $this->render('out/index.html.twig', [
+        ]);
     }
     /**
      * @Route("/test", name="test")
