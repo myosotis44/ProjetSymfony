@@ -25,6 +25,7 @@ h5 {
 .out-ln2 {
     display: flex;
     flex-direction: row;
+    visibility: hidden;
 }
 
 .out-ln2-bl1 {
