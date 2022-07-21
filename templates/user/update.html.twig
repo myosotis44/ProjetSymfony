@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mon profil</h1>
+    {{ form_start(userForm, {attr: {novalidate: 'novalidate'}}) }}
+    {{ form_widget(userForm) }}
+    <button type="submit">Enregistrer</button>
+    <button type="reset">Annuler</button>
+    {{ form_end(userForm) }}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

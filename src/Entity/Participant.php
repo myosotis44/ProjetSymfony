@@ -4,14 +4,19 @@ namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
+ * @UniqueEntity(fields={"mail"}, message="Il y a déjà un compte avec cet email.")
+ * @UniqueEntity(fields={"pseudo"}, message="Il y a déjà un compte avec ce pseudo.")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,6 +37,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le champ est vide.")
      */
     private $password;
 
@@ -60,6 +66,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $pseudo;
 
     public function getId(): ?int
     {
@@ -206,6 +217,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
 
         return $this;
     }
