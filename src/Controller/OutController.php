@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,13 +24,16 @@ class OutController extends AbstractController
     }
     #[Route('/create', name: 'create')]
     public function create(Request $request,
-                            EntityManagerInterface $entityManager): Response
+                            EntityManagerInterface $entityManager,
+                            EtatRepository $etatRepository): Response
     {
         $sortie = new Sortie();
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-
+        $etatInitial = $etatRepository->find(1);
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+
+            $sortie->setEtat($etatInitial);
             $entityManager->persist($sortie);
             $entityManager->flush();
 
