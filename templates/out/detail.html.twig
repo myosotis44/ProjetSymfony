@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center h1">Afficher une sortie</h1>
+    <div class="row">
+        <div class="col-6 mt-5">
+            <div class="row">
+                <div class ="col-5">
+                    <p>Nom de la sortie:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.nom }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Date et heure de la sortie:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.dateHeureDebut | date() }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Date limite d'inscription</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.dateLimiteInscription | date('d/m/Y') }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Nombre de places:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.nbInscriptionsMax }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Durée:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.duree }}mins
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Descriptions et infos:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.infosSortie }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 mt-5">
+            <div class="row">
+                <div class ="col-5">
+                    <p>Campus:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.campus.nom }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Lieu:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.lieu.nom }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Rue:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.lieu.rue }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Code Postal:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.lieu.ville.codePostal }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Latitude:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.lieu.latitude }}
+                </div>
+            </div>
+            <div class="row">
+                <div class ="col-5">
+                    <p>Longitude:</p>
+                </div>
+                <div class="col-7">
+                    {{ sortie.lieu.longitude }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Eni Sortie - {{ sortie.nom }}
+{% endblock %}
+

@@ -25,24 +25,41 @@ class OutController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
-                            EtatRepository $etatRepository): Response
-    {
+                            EtatRepository $etatRepository): Response {
+
         $sortie = new Sortie();
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-        $etatInitial = $etatRepository->find(1);
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+        $etatInitial = $etatRepository->findOneBy(['libelle'=>'Crée']);
 
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $sortie->setEtat($etatInitial);
             $entityManager->persist($sortie);
             $entityManager->flush();
 
             $this->addFlash('success', 'Sortie ajoutée avec succès!');
-            return $this->redirectToRoute('out_index');
+            return $this->redirectToRoute('main_test');
         }
 
         return $this->render('out/create.html.twig', [
             'sortieForm' => $sortieForm->createView()
         ]);
+    }
+
+
+    #[Route('/{id}', name: 'detail')]
+    public function detail(
+                           SortieRepository $sortieRepository, int $id): Response {
+        $sortieObject = $sortieRepository->find($id);
+
+        if(!$sortieObject) {
+            throw $this->createNotFoundException('Cette sortie n\'existe pas');
+        }
+
+        return $this->render('out/detail.html.twig', [
+            'sortie' => $sortieObject,
+        ]);
+
+
     }
 }
