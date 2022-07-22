@@ -13,74 +13,30 @@
             </div>
         </div>
 
-        <h5>Filtrer les sorties</h5>
+        <div class="out-ln2">
 
-        <div>
+            <h5>Filtrer les sorties</h5>
+
             {{ form_start(filterForm) }}
 
-                <div class="out-ln2-bl1">
+            <div class="out_ln2">
+                <div class="out_ln2-bl1">
                     {{ form_row(filterForm.outFilterCampus) }}
                     {{ form_row(filterForm.outFilterSearch) }}
                     {{ form_row(filterForm.outFilterStartDate) }}
                     {{ form_row(filterForm.outFilterEndDate) }}
                 </div>
-                <div class="out-ln2-bl2">
-                    {{ form_row(filterForm.outFilterChkOrg) }}
+                <div class="out_ln2-bl2">
+                    {{ form_row(filterForm.outFilterChk) }}
                 </div>
-                <div class="out-ln2-bl3">
+                <div class="out_ln2-bl3">
                     <button>Rechercher</button>
                 </div>
+            </div>
+
             {{ form_end(filterForm) }}
+
         </div>
-
-        <div class="out-ln2">
-            <div class="out-ln2-bl1">
-                <div class="out-ln2_bl1">
-                    <label for="id-campus">Campus</label>
-                    <select name="Campus" id="id-campus">
-                        <option value="choix1">Choix1</option>
-                        <option value="choix2">Choix2</option>
-                        <option value="choix3">Choix3</option>
-                        <option value="choix4">Choix4</option>
-                    </select>
-                </div>
-                <div class="out-ln2_bl1">
-                    <label for="id-search">Le nom de la sortie contient : &nbsp;</label>
-                    <input type="text" id="id-search">
-                </div>
-                <div class="out-ln2_bl1">
-                    <label for="id-search_Start_Date">Entre&nbsp;&nbsp;&nbsp;</label>
-                    <input type="date" id="id-search_Start_Date">
-                    <label for="id-search_End_Date">&nbsp;&nbsp;&nbsp;et&nbsp;&nbsp;&nbsp;</label>
-                    <input type="date" id="id-search_End_Date">
-                </div>
-            </div>
-            <div class="out-ln2-bl2">
-
-                <div class="out-ln2_bl2">
-                    <input type="checkbox" id="id-chk_Org" name>
-                    <label for="id-chk_Org">Sorties dont je suis l'organisateur/trice</label>
-
-                </div>
-                <div class="out-ln2_bl2">
-                    <input type="checkbox" id="id-chk_Sub">
-                    <label for="id-chk_Sub">Sorties auxquelles je suis inscrit/e</label>
-
-                </div>
-                <div class="out-ln2_bl2">
-                    <input type="checkbox" id="id-chk_NotSub">
-                    <label for="id-chk_NotSub">Sorties auxquelles je ne suis pas inscrit/e</label>
-
-                </div>
-                <div class="out-ln2_bl2">
-                    <input type="checkbox" id="id-chk_End">
-                    <label for="id-chk_End">Sorties passées</label>
-
-                </div>
-            </div>
-            <div class="out-ln2-bl3">
-                <button>Rechercher</button>
-            </div>
 
         </div>
 
@@ -123,9 +79,4 @@
 
     </div>
 
-
-
-<div class="example-wrapper">
-
-</div>
 {% endblock %}
