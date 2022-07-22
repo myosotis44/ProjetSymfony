@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Ville;
+use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Exception;
+use League\Csv\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 /**
@@ -15,13 +20,15 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        return $this->render('out/index.html.twig', [
+        return $this->render('main/index.html.twig', [
         ]);
     }
+
     /**
      * @Route("/test", name="test")
      */
-    public function test(): Response
+    public function test(Request $request,
+                         EntityManagerInterface $manager): Response
     {
         return $this->render('main/index.html.twig' );
     }
