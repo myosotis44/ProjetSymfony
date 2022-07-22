@@ -2,6 +2,8 @@
 
 namespace App\Form\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
 class OutFilterFormModel
 {
     public $outFilterCampus;
@@ -9,19 +11,35 @@ class OutFilterFormModel
     public $outFilterStartDate;
     public $outFilterEndDate;
     public $outFilterChk;
-    public $outFilterChkOrg;
-    public $outFilterChkSub;
-    public $outFilterChkNotSub;
-    public $outFilterChkEnd;
 
-    public function getOutFilterCampus() : ?string
+
+
+    public function outFilterDQLGenerator(OutFilterFormModel $outFilterFormModel)
     {
-        return $this->outFilterCampus;
+        dump($outFilterFormModel->outFilterCampus->getNom());
+        $queryBuilder = $this->createQueryBuilder('o');
+        $queryBuilder
+            -> andWhere('o.nom = :campusNom')
+            ->setParameter('campusNom', $outFilterFormModel->outFilterCampus->getNom());
+
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+
+        /*       dump(
+                   $outFilterFormModel->outFilterCampus->getNom(),
+                   $outFilterFormModel->outFilterSearch,
+                   $outFilterFormModel->outFilterStartDate,
+                   $outFilterFormModel->outFilterEndDate,
+
+
+               );
+
+               if (in_array('ChkOrg', $outFilterFormModel->outFilterChk)) {
+                   dump('ChkOrg is ok');
+               }*/
     }
 
-    public function __toString() : string
-    {
-        return $this->getOutFilterCampus();
-    }
+
+
 
 }

@@ -11,8 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Blank;
-use function Sodium\add;
+
 
 class OutFilterFormType extends AbstractType
 {
@@ -21,6 +20,7 @@ class OutFilterFormType extends AbstractType
         $builder
             ->add('outFilterCampus', EntityType::class, [
                 'class' => Campus::class,
+                'choice_label' => 'nom',
                 'label' => 'Campus'
             ])
             ->add('outFilterSearch', TextType::class, [
@@ -32,21 +32,13 @@ class OutFilterFormType extends AbstractType
             ->add('outFilterEndDate', DateType::class, [
                 'label' => 'et'
             ])
-/*           ->add('outFilterChk', ChoiceType::class, [
+           ->add('outFilterChk', ChoiceType::class, [
                 'label' => ' ',
                 'choices' => [
                     'Sorties dont je suis l organisateur/trice' => 'ChkOrg',
                     'Sorties auxquelles je suis inscrit/e' => 'ChkSub',
                     'Sorties auxquelles je ne suis pas inscrit/e' => 'ChkNotSub',
                     'Sorties passées' => 'ChkEnd',
-                ],
-                'multiple' => true,
-                'expanded' => true
-            ]) */
-            ->add('outFilterChkOrg', ChoiceType::class, [
-                'label' => ' ',
-                'choices' => [
-                    'Sorties dont je suis l organisateur/trice' => 'ChkOrg'
                 ],
                 'multiple' => true,
                 'expanded' => true
