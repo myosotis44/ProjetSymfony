@@ -15,8 +15,6 @@ class OutFilterFormModel
     {
         $this->outFilterStartDate = new \DateTime('now');
         $this->outFilterEndDate = new \DateTime('now');
-        dump($this->outFilterStartDate, $this->outFilterEndDate);
     }
-
 
 }
