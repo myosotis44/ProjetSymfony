@@ -22,7 +22,7 @@
             <div class="out_ln2">
                 <div class="out_ln2-bl1">
                     {{ form_row(filterForm.outFilterCampus) }}
-                    {{ form_row(filterForm.outFilterSearch) }}
+                    {{ form_row(filterForm.outFilterSearch, {'attr' : {'required':''}}) }}
                     {{ form_row(filterForm.outFilterStartDate) }}
                     {{ form_row(filterForm.outFilterEndDate) }}
                 </div>
@@ -30,7 +30,7 @@
                     {{ form_row(filterForm.outFilterChk) }}
                 </div>
                 <div class="out_ln2-bl3">
-                    <button>Rechercher</button>
+                    <button> Rechercher</button>
                 </div>
             </div>
 
@@ -55,16 +55,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for i in 0..2 %}
+                    {% for eachOut in filteredOuts %}
                         <tr>
-                            <td>Philo</td>
-                            <td>19/07/2018 23:45</td>
-                            <td>19/07/2018</td>
-                            <td>8/8</td>
-                            <td>En cours</td>
-                            <td>X</td>
-                            <td>Spinoz A.</td>
-                            <td>Afficher</td>
+                            <td>{{ eachOut.nom }}</td>
+                            <td>{{ eachOut.dateHeureDebut | date("d/m/Y à H:i") }}</td>
+                            <td>{{ eachOut.dateLimiteInscription | date("d/m/Y") }}</td>
+                            <td>TODO / {{ eachOut.nbInscriptionsMax }}</td>
+                            <td>{{ eachOut.etat.libelle }}</td>
+                            <td>TODO</td>
+                            <td>TODO</td>
+                            <td>TODO</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -73,7 +73,7 @@
 
         <div class="out-ln4">
             <div class="out-ln4-bl1">
-                <button>Créer une sortie</button>
+                <button onclick="window.location.href = '{{ path('out_create') }}';">Créer une sortie</button>
             </div>
         </div>
 

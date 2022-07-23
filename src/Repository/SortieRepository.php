@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Form\Model\OutFilterFormModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,44 @@ class SortieRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function outFilterDQLGenerator(OutFilterFormModel $outFilterFormModel)
+    {
+        $queryBuilder = $this->createQueryBuilder('o');
+
+        $queryBuilder
+                -> Where('o.campus = :campus')
+                -> setParameter('campus', $outFilterFormModel->outFilterCampus);
+
+        if($outFilterFormModel->outFilterSearch) {
+            $queryBuilder
+                -> andWhere('o.nom LIKE :search')
+                -> setParameter('search', '%'.$outFilterFormModel->outFilterSearch.'%');
+        }
+
+        $queryBuilder
+            -> andWhere(':startDate <= o.dateHeureDebut')
+            -> andWhere('o.dateHeureDebut <= :endDate')
+            -> setParameter('startDate', $outFilterFormModel->outFilterStartDate)
+            -> setParameter('endDate', $outFilterFormModel->outFilterEndDate);
+
+        $query = $queryBuilder->getQuery();
+
+        return ($query->getResult());
+
+        /*       dump(
+                   $outFilterFormModel->outFilterCampus->getNom(),
+                   $outFilterFormModel->outFilterSearch,
+                   $outFilterFormModel->outFilterStartDate,
+                   $outFilterFormModel->outFilterEndDate,
+
+
+               );
+
+               if (in_array('ChkOrg', $outFilterFormModel->outFilterChk)) {
+                   dump('ChkOrg is ok');
+               }*/
     }
 
 //    /**
