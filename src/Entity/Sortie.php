@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use http\Client\Curl\User;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -78,8 +79,9 @@ class Sortie
      */
     private $participants;
 
-    public function __construct()
+    public function __construct($user)
     {
+        $this->organisateur = $user;
         $this->participants = new ArrayCollection();
     }
 

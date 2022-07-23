@@ -44,7 +44,7 @@ class OutController extends AbstractController
                             EntityManagerInterface $entityManager,
                             EtatRepository $etatRepository): Response {
 
-        $sortie = new Sortie();
+        $sortie = new Sortie($this->getUser());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         $etatInitial = $etatRepository->findOneBy(['libelle'=>'Crée']);

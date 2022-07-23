@@ -35,7 +35,7 @@ class OutFilterFormType extends AbstractType
            ->add('outFilterChk', ChoiceType::class, [
                 'label' => ' ',
                 'choices' => [
-                    'Sorties dont je suis l organisateur/trice' => 'ChkOrg',
+                    'Sorties dont je suis l\'organisateur/trice' => 'ChkOrg',
                     'Sorties auxquelles je suis inscrit/e' => 'ChkSub',
                     'Sorties auxquelles je ne suis pas inscrit/e' => 'ChkNotSub',
                     'Sorties passées' => 'ChkEnd',
