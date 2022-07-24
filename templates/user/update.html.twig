@@ -7,6 +7,10 @@
     <button type="submit">Enregistrer</button>
     <button type="reset">Annuler</button>
     {{ form_end(userForm) }}
+<div class="mt-3 text-center">
+    <a href="{{ path('app_user', {id: app.user.id}) }}">Voir mon profil</a>
+</div>
+
 {% endblock %}
 
 {% block title %}

@@ -33,6 +33,12 @@
        {{ app.user.campus.nom}}
     </div>
 
+    {%if app.user.imageUtilisateur %}
+    <div class="mb-3">
+    <img src="{{ asset('images/profile/'~ app.user.imageUtilisateur) }}" alt="Image de profil" width="180">
+    {% endif %}
+    </div>
+
     <button><a href="{{ path('user_update', {id: app.user.id}) }}">Retour</a></button>
 
 

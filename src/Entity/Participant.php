@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  * @UniqueEntity(fields={"mail"}, message="Il y a déjà un compte avec cet email.")
  * @UniqueEntity(fields={"pseudo"}, message="Il y a déjà un compte avec ce pseudo.")
+
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -90,6 +91,30 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sorties = new ArrayCollection();
     }
 
+    /**
+     *
+     * @ORM\Column (type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "image/*" })
+     */
+    private $imageUtilisateur;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $updated_at;
+    public function getImageUtilisateur(): ?string
+    {
+        return $this->imageUtilisateur;
+    }
+
+    public function setImageUtilisateur(string $imageUtilisateur): self
+    {
+        $this->imageUtilisateur = $imageUtilisateur;
+        $this->updated_at = new \DateTimeImmutable('now');
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,7 +139,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->mail;
+        return (string)$this->mail;
     }
 
     /**
@@ -122,7 +147,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->mail;
+        return (string)$this->mail;
     }
 
     /**
@@ -304,4 +329,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
 }
