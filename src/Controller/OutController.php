@@ -40,7 +40,6 @@ class OutController extends AbstractController
             $this->addFlash('success', 'Sortie ajoutée avec succès!');
             return $this->redirectToRoute('main_test');
         }
-
         return $this->render('out/create.html.twig', [
             'sortieForm' => $sortieForm->createView()
         ]);
@@ -59,7 +58,5 @@ class OutController extends AbstractController
         return $this->render('out/detail.html.twig', [
             'sortie' => $sortieObject,
         ]);
-
-
     }
 }
