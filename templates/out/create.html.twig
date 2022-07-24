@@ -1,11 +1,121 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="col-6 m-auto my-5">
-    {{ form_start(sortieForm) }}
-    {{ form_widget(sortieForm) }}
-    {{ form_end(sortieForm) }}
-</div>
+    <h1 class="text-center h1">Créer une sortie</h1>
+    <div class="col-10 m-auto my-5">
+        {{ form_start(sortieForm) }}
+        <div class="row">
+            <div class="col-6">
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.nom) }}">Nom de la sortie: </label>
+                    <div class="col-6">
+                        <input type="text"
+                               id="{{ field_name(sortieForm.nom) }}"
+                               name="{{ field_name(sortieForm.nom) }}"
+                               value="{{ field_value(sortieForm.nom) }}"
+                               class="form-control"
+                        >
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.dateHeureDebut) }}">Date et heure de la sortie: </label>
+                    <div class="col-6">
+                        <input type="datetime-local"
+                               id="{{ field_name(sortieForm.dateHeureDebut) }}"
+                               name="{{ field_name(sortieForm.dateHeureDebut) }}"
+                               value="{{ "now"|date_modify("+7 days")|date('d/m/Y') }}"
+                               class="form-control"
+                        >
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.dateLimiteInscription) }}">Date limite d'inscription: </label>
+                    <div class="col-6">
+                        <input type="datetime-local"
+                               id="{{ field_name(sortieForm.dateLimiteInscription) }}"
+                               name="{{ field_name(sortieForm.dateLimiteInscription) }}"
+                               value="{{ "now"|date('d/m/Y') }}"
+                               class="form-control"
+                        >
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.nbInscriptionsMax) }}">Nombre de places: </label>
+                    <div class="col-2">
+                        <input type="number"
+                               id="{{ field_name(sortieForm.nbInscriptionsMax) }}"
+                               name="{{ field_name(sortieForm.nbInscriptionsMax) }}"
+                               value="10"
+                               class="form-control text-end"
+                        >
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.duree) }}">Durée: </label>
+                    <div class="col-2">
+                        <input type="number"
+                               id="{{ field_name(sortieForm.duree) }}"
+                               name="{{ field_name(sortieForm.duree) }}"
+                               value="90"
+                               class="form-control text-end"
+                        >
+                    </div>
+                    <div class="col-4">minutes</div>
+                </div>
+                <div class="row mb-4">
+                    <label class="col-5" for="{{ field_name(sortieForm.infosSortie) }}">Descriptions et infos: </label>
+                    <div class="col-7">
+                        <textarea
+                               id="{{ field_name(sortieForm.infosSortie) }}"
+                               name="{{ field_name(sortieForm.infosSortie) }}"
+                               rows="5"
+                               class="form-control">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mb-4">
+                <div class="row mb-4">
+                    <div class="col-5">
+                    {{ form_label(sortieForm.campus) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.campus) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.ville) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.ville) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.lieu) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.lieu) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
+            </div>
+            <div class="col-3">
+                <button class="btn btn-success btn-lg">Publier la sortie</button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-danger btn-lg">Annuler</button>
+            </div>
+        </div>
+        {{ form_end(sortieForm) }}
+    </div>
 {% endblock %}
 
 {% block title %}

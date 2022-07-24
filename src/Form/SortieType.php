@@ -56,8 +56,6 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 'class' => Ville::class,
             ])
-
-            ->add('save', SubmitType::class)
         ;
     }
 

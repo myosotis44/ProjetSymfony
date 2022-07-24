@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Ville;
+use App\Form\Model\OutFilterFormModel;
+use App\Form\OutFilterFormType;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Csv\Exception;
-use League\Csv\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +18,21 @@ class MainController extends AbstractController
     /**
      * @Route("", name="home")
      */
-    public function home(): Response
+    public function home(Request $request,SortieRepository $sortieRepository): Response
     {
-        return $this->render('main/index.html.twig', [
+        $filteredOuts = null;
+        $filter = new OutFilterFormModel();
+        $filterForm = $this->createForm(OutFilterFormType::class, $filter);
+
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter);
+        }
+
+        return $this->render('out/index.html.twig', [
+            'filterForm' => $filterForm->createView(),
+            'filteredOuts' => $filteredOuts
         ]);
     }
 
