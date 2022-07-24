@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Form\Model\OutFilterFormModel;
+use App\Form\OutFilterFormType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -17,17 +19,32 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutController extends AbstractController
 {
     #[Route('', name: 'index')]
-    public function index(): Response
+    public function index(Request $request, SortieRepository $sortieRepository): Response
     {
+        $filteredOuts = null;
+        $filter = new OutFilterFormModel();
+        $filterForm = $this->createForm(OutFilterFormType::class, $filter);
+
+        $filterForm->handleRequest($request);
+
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter);
+        }
+
         return $this->render('out/index.html.twig', [
+            'filterForm' => $filterForm->createView(),
+            'filteredOuts' => $filteredOuts
         ]);
+
     }
+
+
     #[Route('/create', name: 'create')]
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
                             EtatRepository $etatRepository): Response {
 
-        $sortie = new Sortie();
+        $sortie = new Sortie($this->getUser());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
         $etatInitial = $etatRepository->findOneBy(['libelle'=>'Crée']);
