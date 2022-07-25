@@ -8,39 +8,49 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <div class="mb-3">
+<div class="card example-wrapper text-center bg-light">
+    <div class="mb-3 fs-2 text-capitalize card-header">
         <h1>{{ app.user.pseudo }}</h1>
     </div>
+    <div class="row g-0">
+    {%if app.user.imageUtilisateur %}
+        <div class="mb-3 col-md-4">
+            <img src="{{ asset('images/profile/'~ app.user.imageUtilisateur) }}"
+                 class="rounded-start mx-auto d-block img-fluid"
+                 alt="Image de profil" width="180">
+        </div>
+    {% endif %}
+        <div class="col-md-8">
+            <div class="card-body">
     <div class="mb-3">
-        <label class="form-label">Prénom:</label>
+        <label class="form-label fw-bold">Prénom:</label>
         {{ app.user.prenom }}
     </div>
     <div class="mb-3">
-        <label class="form-label">Nom:</label>
+        <label class="form-label fw-bold">Nom:</label>
         {{ app.user.nom }}
     </div>
     <div class="mb-3">
-        <label class="form-label">Téléphone:</label>
+        <label class="form-label fw-bold">Téléphone:</label>
         {{ app.user.telephone }}
     </div>
     <div class="mb-3">
-        <label class="form-label">Email:</label>
+        <label class="form-label fw-bold">Email:</label>
         {{ app.user.mail}}
     </div>
     <div class="mb-3">
-        <label class="form-label">Campus:</label>
+        <label class="form-label fw-bold">Campus:</label>
        {{ app.user.campus.nom}}
     </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    {%if app.user.imageUtilisateur %}
-    <div class="mb-3">
-    <img src="{{ asset('images/profile/'~ app.user.imageUtilisateur) }}" alt="Image de profil" width="180">
-    {% endif %}
+    <div class="text-center">
+   <a href="{{ path('user_update', {id: app.user.id}) }}" class="text-decoration-none btn btn-dark">Retour</a>
     </div>
 
-    <button><a href="{{ path('user_update', {id: app.user.id}) }}">Retour</a></button>
 
 
-</div>
 {% endblock %}
