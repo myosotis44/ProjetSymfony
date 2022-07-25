@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\Model\OutFilterFormModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -40,42 +41,58 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function outFilterDQLGenerator(OutFilterFormModel $outFilterFormModel)
+    public function outFilterDQLGenerator(OutFilterFormModel $outFilterFormModel, Participant $connectedUser)
     {
         $queryBuilder = $this->createQueryBuilder('o');
 
-        $queryBuilder
-                -> Where('o.campus = :campus')
-                -> setParameter('campus', $outFilterFormModel->outFilterCampus);
-
-        if($outFilterFormModel->outFilterSearch) {
+        if (in_array('ChkSub', $outFilterFormModel->outFilterChk, true )) {
             $queryBuilder
-                -> andWhere('o.nom LIKE :search')
-                -> setParameter('search', '%'.$outFilterFormModel->outFilterSearch.'%');
+                ->join('o.participants', 'p')
+                ->andwhere('p.mail = :connectedUserMail')
+                ->setParameter('connectedUserMail', $connectedUser->getMail());
+        }
+
+        if (in_array('ChkNotSub', $outFilterFormModel->outFilterChk, true )) {
+            $queryBuilder
+                ->leftJoin('o.participants', 'q')
+                ->andwhere('q.mail != :connectedUserMail')
+                ->setParameter('connectedUserMail', $connectedUser->getMail());
+        }
+
+        if (in_array('ChkOrg', $outFilterFormModel->outFilterChk, true )) {
+            $queryBuilder
+                ->andWhere('o.organisateur = :connectedUser')
+                ->setParameter('connectedUser', $connectedUser);
+        }
+
+        if (in_array('ChkEnd', $outFilterFormModel->outFilterChk, true )) {
+            $queryBuilder
+                ->andWhere('o.dateHeureDebut < :now')
+                ->setParameter('now', new \DateTime('now') );
+        }
+
+        if (!in_array('ChkEnd', $outFilterFormModel->outFilterChk, true )) {
+            $queryBuilder
+                ->andWhere(':startDate <= o.dateHeureDebut')
+                ->andWhere('o.dateHeureDebut <= :endDate')
+                ->setParameter('startDate', $outFilterFormModel->outFilterStartDate)
+                ->setParameter('endDate', $outFilterFormModel->outFilterEndDate);
+        }
+
+        if($outFilterFormModel->outFilterSearch != null) {
+            $queryBuilder
+                ->andWhere('o.nom LIKE :search')
+                ->setParameter('search', '%'.$outFilterFormModel->outFilterSearch.'%');
         }
 
         $queryBuilder
-            -> andWhere(':startDate <= o.dateHeureDebut')
-            -> andWhere('o.dateHeureDebut <= :endDate')
-            -> setParameter('startDate', $outFilterFormModel->outFilterStartDate)
-            -> setParameter('endDate', $outFilterFormModel->outFilterEndDate);
+            ->andWhere('o.campus = :campus')
+            ->setParameter('campus', $outFilterFormModel->outFilterCampus);
 
         $query = $queryBuilder->getQuery();
 
         return ($query->getResult());
 
-        /*       dump(
-                   $outFilterFormModel->outFilterCampus->getNom(),
-                   $outFilterFormModel->outFilterSearch,
-                   $outFilterFormModel->outFilterStartDate,
-                   $outFilterFormModel->outFilterEndDate,
-
-
-               );
-
-               if (in_array('ChkOrg', $outFilterFormModel->outFilterChk)) {
-                   dump('ChkOrg is ok');
-               }*/
     }
 
 //    /**

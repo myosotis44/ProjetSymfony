@@ -8,7 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,14 +23,18 @@ class OutFilterFormType extends AbstractType
                 'choice_label' => 'nom',
                 'label' => 'Campus'
             ])
-            ->add('outFilterSearch', TextType::class, [
-                'label' => 'Le nom de la sortie contient :'
+            ->add('outFilterSearch', SearchType::class, [
+                'label' => 'Le nom de la sortie contient :',
+                'attr' => ['placeholder' => 'search'],
+                'required' => false
             ])
             ->add('outFilterStartDate', DateType::class, [
-                'label' => 'Entre'
+                'label' => 'Entre',
+                'format' => 'dd MM yyyy'
             ])
             ->add('outFilterEndDate', DateType::class, [
-                'label' => 'et'
+                'label' => 'et',
+                'format' => 'dd MM yyyy'
             ])
            ->add('outFilterChk', ChoiceType::class, [
                 'label' => ' ',
