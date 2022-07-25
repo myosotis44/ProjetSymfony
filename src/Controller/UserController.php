@@ -31,9 +31,14 @@ class UserController extends AbstractController
                                  UserPasswordHasherInterface $userPasswordHasher, int $id): Response
     {
         $user = $participantRepository->find($id);
-        $user->setImageUtilisateur(
-            new File($this->getParameter('images_directory').'/'.$user->getImageUtilisateur())
-        );
+
+        // Crée une instance de File si une image utilisateur est enregistrée afin de pouvoir l'éditer ensuite
+        if ($user->getImageUtilisateur() != null) {
+            $user->setImageUtilisateur(
+                new File($this->getParameter('images_directory').'/'.$user->getImageUtilisateur())
+            );
+        }
+
         $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
 
