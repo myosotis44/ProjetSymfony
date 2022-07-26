@@ -9,15 +9,15 @@ class OutFilterFormModel
 {
     public Campus $outFilterCampus;
 
-    public mixed $outFilterSearch = "";
+    public $outFilterSearch;
 
     /**
-     * @Assert\GreaterThanOrEqual("Today", message="La dâte ne peut pas être antérieure à celle du jour !")
+     * @Assert\GreaterThanOrEqual("Today", message="Cette dâte ne peut pas être antérieure à la dâte du jour !")
      */
     public \DateTime $outFilterStartDate;
 
     /**
-     * @Assert\Expression("this.outFilterStartDate <= this.outFilterEndDate", message="La dâte ne peut pas être antérieure à celle de début !")
+     * @Assert\Expression("this.outFilterStartDate <= this.outFilterEndDate", message="La dâte de fin ne peut pas être antérieure à la date de début !")
      */
     public \DateTime $outFilterEndDate;
 
@@ -26,6 +26,7 @@ class OutFilterFormModel
     public function __construct()
     {
         $this->outFilterStartDate = new \DateTime('now');
-        $this->outFilterEndDate = new \DateTime('now');
+        $this->outFilterEndDate = new \DateTime('now + 1 month');
     }
 }
+
