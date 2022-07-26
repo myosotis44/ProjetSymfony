@@ -77,7 +77,9 @@ class OutController extends AbstractController
     }
 
 
-    #[Route('/create', name: 'create')]
+    /**
+     * @Route("/create", name="create")
+     */
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
                             EtatRepository $etatRepository): Response {
