@@ -9,7 +9,7 @@
         <div class="out-ln1">
             <div class="out-ln1-bl1">
                 <div>Date du jour : {{ "now" | date("d/m/Y") }}</div>
-                <div>Participant : {{ app.user.userIdentifier }} </div>
+                <div>Participant : {{ app.user.nom }} {{ app.user.prenom }} </div>
             </div>
         </div>
 
@@ -55,16 +55,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for eachOut in filteredOuts %}
+                    {% for eachFilteredOut in filteredOuts %}
                         <tr>
-                            <td>{{ eachOut.nom }}</td>
-                            <td>{{ eachOut.dateHeureDebut | date("d/m/Y à H:i") }}</td>
-                            <td>{{ eachOut.dateLimiteInscription | date("d/m/Y") }}</td>
-                            <td>TODO / {{ eachOut.nbInscriptionsMax }}</td>
-                            <td>{{ eachOut.etat.libelle }}</td>
-                            <td>TODO</td>
-                            <td>{{ eachOut.organisateur.nom }} {{ eachOut.organisateur.prenom}}</td>
-                            <td>TODO</td>
+
+                            <td>{{ eachFilteredOut.nom }}</td>
+
+                            <td>{{ eachFilteredOut.dateHeureDebut | date("d/m/Y à H:i") }}</td>
+
+                            <td>{{ eachFilteredOut.dateLimiteInscription | date("d/m/Y") }}</td>
+
+                            <td>TODO / {{ eachFilteredOut.nbInscriptionsMax }}</td>
+
+                            <td>{{ eachFilteredOut.etat.libelle }}</td>
+
+                            {% if app.user in eachFilteredOut.participants %}
+                                <td> X </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+
+                            <td>{{ eachFilteredOut.organisateur.nom }} {{ eachFilteredOut.organisateur.prenom}}</td>
+
+                            <td>
+                            {% for eachAction in eachFilteredOut.actions %}
+
+                                {% if eachAction == 'Afficher' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% elseif eachAction == 'Modifier' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% elseif eachAction == 'Publier' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% elseif eachAction == 'Se désister' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% elseif eachAction == 'Annuler' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% elseif eachAction == 'S\'inscrire' %}
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                {% endif %}
+
+                            {% endfor %}
+                            </td>
+
                         </tr>
                     {% endfor %}
                 </tbody>

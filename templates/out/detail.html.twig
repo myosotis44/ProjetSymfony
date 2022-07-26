@@ -6,7 +6,7 @@
         <div class="col-6 mt-5">
             <div class="row">
                 <div class ="col-5">
-                    <p>Nom de la sortie:</p>
+                    <p>Nom de la sortie :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.nom }}
@@ -14,15 +14,15 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Date et heure de la sortie:</p>
+                    <p>Date et heure de la sortie :</p>
                 </div>
                 <div class="col-7">
-                    {{ sortie.dateHeureDebut | date() }}
+                    {{ sortie.dateHeureDebut | date('d/m/Y à h:i') }}
                 </div>
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Date limite d'inscription</p>
+                    <p>Date limite d'inscription :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.dateLimiteInscription | date('d/m/Y') }}
@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Nombre de places:</p>
+                    <p>Nombre de places :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.nbInscriptionsMax }}
@@ -38,7 +38,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Durée:</p>
+                    <p>Durée :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.duree }}mins
@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Descriptions et infos:</p>
+                    <p>Descriptions et infos :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.infosSortie }}
@@ -57,7 +57,7 @@
         <div class="col-6 mt-5">
             <div class="row">
                 <div class ="col-5">
-                    <p>Campus:</p>
+                    <p>Campus :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.campus.nom }}
@@ -65,7 +65,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Lieu:</p>
+                    <p>Lieu :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.lieu.nom }}
@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Rue:</p>
+                    <p>Rue :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.lieu.rue }}
@@ -81,7 +81,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Code Postal:</p>
+                    <p>Code Postal :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.lieu.ville.codePostal }}
@@ -89,7 +89,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Latitude:</p>
+                    <p>Latitude :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.lieu.latitude }}
@@ -97,7 +97,7 @@
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Longitude:</p>
+                    <p>Longitude :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.lieu.longitude }}

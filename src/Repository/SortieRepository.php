@@ -45,33 +45,34 @@ class SortieRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('o');
 
-        if (in_array('ChkSub', $outFilterFormModel->outFilterChk, true )) {
+        if (in_array('ChkSub', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
                 ->join('o.participants', 'p')
-                ->andwhere('p.mail = :connectedUserMail')
+                ->andWhere('p.mail = :connectedUserMail')
                 ->setParameter('connectedUserMail', $connectedUser->getMail());
         }
 
-        if (in_array('ChkNotSub', $outFilterFormModel->outFilterChk, true )) {
+        if (in_array('ChkNotSub', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
                 ->leftJoin('o.participants', 'q')
-                ->andwhere('q.mail != :connectedUserMail')
-                ->setParameter('connectedUserMail', $connectedUser->getMail());
+            ->andWhere('o.organisateur != :connectedUserMail')
+//                ->andWhere('q.id != :connectedUserMail')
+                ->setParameter('connectedUserMail', $connectedUser);   //$connectedUser->getMail());
         }
 
-        if (in_array('ChkOrg', $outFilterFormModel->outFilterChk, true )) {
+        if (in_array('ChkOrg', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
                 ->andWhere('o.organisateur = :connectedUser')
                 ->setParameter('connectedUser', $connectedUser);
         }
 
-        if (in_array('ChkEnd', $outFilterFormModel->outFilterChk, true )) {
+        if (in_array('ChkEnd', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
                 ->andWhere('o.dateHeureDebut < :now')
                 ->setParameter('now', new \DateTime('now') );
         }
 
-        if (!in_array('ChkEnd', $outFilterFormModel->outFilterChk, true )) {
+        if (!in_array('ChkEnd', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
                 ->andWhere(':startDate <= o.dateHeureDebut')
                 ->andWhere('o.dateHeureDebut <= :endDate')

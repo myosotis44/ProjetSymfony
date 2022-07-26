@@ -6,7 +6,6 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use http\Client\Curl\User;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -84,6 +83,8 @@ class Sortie
         $this->organisateur = $user;
         $this->participants = new ArrayCollection();
     }
+
+    private array $actions;
 
 
     public function getId(): ?int
@@ -234,6 +235,18 @@ class Sortie
         if ($this->participants->removeElement($participant)) {
             $participant->removeSorty($this);
         }
+
+        return $this;
+    }
+
+    public function getActions(): ?array
+    {
+        return $this->actions;
+    }
+
+    public function setActions(array $actions): self
+    {
+        $this->actions = $actions;
 
         return $this;
     }

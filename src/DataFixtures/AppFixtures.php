@@ -97,7 +97,7 @@ class AppFixtures extends Fixture
     }
 
     public function addEtat() {
-        $etatList = ['Crée','Ouverte','Clôturée','Activité en cours', 'Passées', 'Annulée'];
+        $etatList = ['En création','Ouverte','Clôturée','Activité en cours', 'Activité Terminée', 'Annulée'];
         foreach ($etatList as $etatName ) {
             $etatObj = new Etat();
             $etatObj->setLibelle($etatName);

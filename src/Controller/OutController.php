@@ -8,6 +8,7 @@ use App\Form\OutFilterFormType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use App\Services\OutServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,13 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OutController extends AbstractController
 {
-
     /**
      * @Route("", name="index")
      */
-    public function index(Request $request, SortieRepository $sortieRepository): Response
+    public function index(Request $request, SortieRepository $sortieRepository, OutServices $outServices): Response
     {
         $filteredOuts = null;
+
         $filter = new OutFilterFormModel();
         $filterForm = $this->createForm(OutFilterFormType::class, $filter);
 
@@ -33,47 +34,13 @@ class OutController extends AbstractController
 
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
             $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter, $this->getUser());
-
-            dump('Début de traitement : ', $filteredOuts);
-            /*  "Afficher" => tous les états sauf "En création"
-                "Modifier" & Publier => états "En création"
-                "Annuler"
-            */
-            foreach ($filteredOuts as $eachFilteredOut) {
-
-                $eachFilteredOut->addParticipant($this->getUser());
-
-                $actions = array();
-
-                if ($eachFilteredOut->getEtat()->getLibelle() === 'En création') {
-                    $actions[] = 'Modifier';
-                    $actions[] = 'Publier';
-                }
-                else {
-                    $actions[] = 'Afficher';
-                }
-
- /*               if ($eachFilteredOut->getEtat()->getLibelle() === 'Fermé' && $eachFilteredOut->getEtat()->getLibelle() === 'Fermé') {
-
-                }*/
-
-                $eachFilteredOut->setActions($actions);
-
-            dump(implode('-',$actions));
-
-            }
-
-            dump($actions);
+            $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
-
-        dump('Fin de traitement : ', $filteredOuts);
 
         return $this->render('out/index.html.twig', [
             'filterForm' => $filterForm->createView(),
-            'filteredOuts' => $filteredOuts,
-/*            'actions' => $actions*/
+            'filteredOuts' => $filteredOuts
         ]);
-
     }
 
 
@@ -106,8 +73,8 @@ class OutController extends AbstractController
     /**
      * @Route("/{id}", name="detail")
      */
-    public function detail(
-                           SortieRepository $sortieRepository, int $id): Response {
+    public function detail(SortieRepository $sortieRepository, int $id): Response {
+
         $sortieObject = $sortieRepository->find($id);
 
         if(!$sortieObject) {
