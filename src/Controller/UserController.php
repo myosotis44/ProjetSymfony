@@ -16,7 +16,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
-    #[Route('/user/{id}', name: 'app_user', requirements: ['id' => '\d+'])]
+    /**
+     * @Route("/user/{id}", name="app_user", requirements={"id"="\d+"})
+     */
     public function displayProfil(int $id, ParticipantRepository $participantRepository): Response
     {
         $user = $participantRepository->find($id);
@@ -25,7 +27,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/update', name: 'user_update')]
+    /**
+     * @Route("/user/{id}/update", name="user_update")
+     */
     public function updateProfil(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger,
                                  ParticipantRepository $participantRepository,
                                  UserPasswordHasherInterface $userPasswordHasher, int $id): Response
