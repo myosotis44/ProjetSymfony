@@ -80,6 +80,8 @@ class Sortie
 
     public function __construct($user)
     {
+        $this->dateHeureDebut = new \DateTime('now');
+        $this->dateLimiteInscription = new \DateTime('now + 7 days');
         $this->organisateur = $user;
         $this->participants = new ArrayCollection();
     }

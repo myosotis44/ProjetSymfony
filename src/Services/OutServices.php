@@ -50,10 +50,11 @@ class OutServices
             }
 
             $eachFilteredOut->setNbParticipants($nbParticipants);
+
             $eachFilteredOut->setActions($actions);
-
-
         }
+
+        return $filteredOuts;
 
     }
 }
