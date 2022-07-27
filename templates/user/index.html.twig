@@ -10,12 +10,12 @@
 
 <div class="card example-wrapper text-center bg-light">
     <div class="mb-3 fs-2 text-capitalize card-header">
-        <h1>{{ app.user.pseudo }}</h1>
+        <h1>{{ user.pseudo }}</h1>
     </div>
     <div class="row g-0">
     {%if app.user.imageUtilisateur %}
         <div class="mb-3 col-md-4">
-            <img src="{{ asset('images/profile/'~ app.user.imageUtilisateur) }}"
+            <img src="{{ asset('images/profile/'~ user.imageUtilisateur) }}"
                  class="rounded-start mx-auto d-block img-fluid"
                  alt="Image de profil" width="180">
         </div>
@@ -24,23 +24,23 @@
             <div class="card-body">
     <div class="mb-3">
         <label class="form-label fw-bold">Prénom:</label>
-        {{ app.user.prenom }}
+        {{ user.prenom }}
     </div>
     <div class="mb-3">
         <label class="form-label fw-bold">Nom:</label>
-        {{ app.user.nom }}
+        {{ user.nom }}
     </div>
     <div class="mb-3">
         <label class="form-label fw-bold">Téléphone:</label>
-        {{ app.user.telephone }}
+        {{ user.telephone }}
     </div>
     <div class="mb-3">
         <label class="form-label fw-bold">Email:</label>
-        {{ app.user.mail}}
+        {{ user.mail}}
     </div>
     <div class="mb-3">
         <label class="form-label fw-bold">Campus:</label>
-       {{ app.user.campus.nom}}
+       {{ user.campus.nom}}
     </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
 </div>
 
     <div class="text-center">
-   <a href="{{ path('user_update', {id: app.user.id}) }}" class="text-decoration-none btn btn-dark">Retour</a>
+   <a href="{{ path('user_update', {id: user.id}) }}" class="text-decoration-none btn btn-dark">Retour</a>
     </div>
 
 

@@ -183,5 +183,21 @@ class AppFixtures extends Fixture
         $this->manager->persist($utilisateur);
 
         $this->manager->flush();
+
+        $admin = new Participant();
+        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setActif(true);
+        $admin->setCampus($this->generator->randomElement($campusList));
+        $admin->setMail("admin@sortir.com");
+        $admin->setNom($this->generator->lastName);
+        $admin->setPrenom($this->generator->firstName);
+        $admin->setTelephone($this->generator->phoneNumber);
+        $admin->setPseudo("admin1");
+
+        $passwordAdmin = $this->hasher->hashPassword($admin, "admin");
+        $admin->setPassword($passwordAdmin);
+        $this->manager->persist($admin);
+
+        $this->manager->flush();
     }
 }

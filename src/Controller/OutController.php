@@ -33,10 +33,9 @@ class OutController extends AbstractController
         $filterForm = $this->createForm(OutFilterFormType::class, $filter);
 
         $filterForm->handleRequest($request);
-
         if ($filterForm->isSubmitted() && $filterForm->isValid()) {
             $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter, $this->getUser());
-            $outServices->actionsFilter($filteredOuts, $this->getUser());
+            $filteredOuts = $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
 
         return $this->render('out/index.html.twig', [
@@ -95,7 +94,7 @@ class OutController extends AbstractController
 
 
     /**
-     * @Route("/subscribe/{id}", name="subscribe")
+     * @Route("/{id}/subscribe", name="subscribe")
      */
     public function subscribe(SortieRepository $sortieRepository, int $id): Response
     {
@@ -104,17 +103,17 @@ class OutController extends AbstractController
         if(!$result) {
             throw $this->createNotFoundException('Impossible de s\'inscrire car cette sortie n\'existe pas');
         }
-        else {
-            $result->addParticipant($this->getUser());
-            $sortieRepository->add($result, true);
-        }
+
+        $result->addParticipant($this->getUser());
+        $sortieRepository->add($result, true);
+        $this->addFlash('success', 'Félicitation, vous venez de vous inscrire à la sortie : ' . $result->getNom());
 
         return $this->redirectToRoute('out_index');
     }
 
 
     /**
-     * @Route("/unsubscribe/{id}", name="unsubscribe")
+     * @Route("/{id}/unsubscribe", name="unsubscribe")
      */
     public function unsubscribe(SortieRepository $sortieRepository, int $id): Response
     {
@@ -123,12 +122,39 @@ class OutController extends AbstractController
         if(!$result) {
             throw $this->createNotFoundException('Impossible de se désinscrire car cette sortie n\'existe pas');
         }
-        else {
-            $result->removeParticipant($this->getUser());
-            $sortieRepository->add($result, true);
-        }
+
+        $result->removeParticipant($this->getUser());
+        $sortieRepository->add($result, true);
+        $this->addFlash('success', 'Désolé de ne plus pouvoir compter sur votre présence lors de notre sortie : ' . $result->getNom() . ' ...');
 
         return $this->redirectToRoute('out_index');
     }
-}
 
+
+    /**
+     * @Route("/{id}/edit", name="edit")
+     */
+    public function edit(Request $request, SortieRepository $sortieRepository, int $id) : Response {
+
+        $sortie = $sortieRepository->find($id);
+        dump($sortie->getInfosSortie());
+
+        if(!$sortie) {
+            throw $this->createNotFoundException('Impossible de se modifier une sortie qui n\'existe pas');
+        }
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+            $sortieRepository->add($sortie, true);
+            $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a bien été modifée !');
+            return $this->redirectToRoute('out_detail', ['id' => $sortie->getId()]);
+        }
+
+        return $this->render('out/edit.html.twig', [
+            'sortieForm' => $sortieForm->createView(),
+        ]);
+    }
+
+}

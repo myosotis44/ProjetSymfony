@@ -33,37 +33,37 @@ class SortieType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'label' => 'Nom de la sortie:',
+                'label' => 'Nom de la sortie :',
             ])
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie',
+                'label' => 'Date et heure de la sortie :',
                 'html5' => false,
                 'data' => new \DateTime(),
                 'format' => 'dd MM yyyy'
 
             ])
             ->add('dateLimiteInscription', DateTimeType::class, [
-                'label' => 'Date limite d\'inscription',
+                'label' => 'Date limite d\'inscription :',
                 'html5' => false,
                 'data' => new \DateTime(),
                 'format' => 'dd MM yyyy'
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'label' => 'Nombre de places:',
+                'label' => 'Nombre de places :',
             ])
             ->add('duree', IntegerType::class, [
                 'label' => 'Durée',
             ])
             ->add('infosSortie', TextareaType::class, [
-                'label' => 'Description et infos',
+                'label' => 'Description et infos :',
             ])
             ->add('campus', EntityType::class, [
-                'label' => 'Campus',
+                'label' => 'Campus :',
                 'class' => Campus::class,
                 'choice_label' => 'nom',
             ])
             ->add('ville', EntityType::class, [
-                'label' => 'Ville: ',
+                'label' => 'Ville : ',
                 'mapped' => false,
                 'choice_label' => 'nom',
                 'class' => Ville::class,
@@ -144,6 +144,7 @@ class SortieType extends AbstractType
 
                 }
             );
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
