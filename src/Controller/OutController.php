@@ -54,7 +54,7 @@ class OutController extends AbstractController
         $sortie = new Sortie($this->getUser());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-        $etatInitial = $etatRepository->findOneBy(['libelle'=>'Crée']);
+        $etatInitial = $etatRepository->findOneBy(['libelle'=>'En création']);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
             $sortie->setEtat($etatInitial);

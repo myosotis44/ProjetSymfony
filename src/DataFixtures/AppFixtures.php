@@ -117,6 +117,7 @@ class AppFixtures extends Fixture
             $utilisateur->setPrenom($this->generator->firstName);
             $utilisateur->setTelephone($this->generator->phoneNumber);
             $utilisateur->setPseudo($this->generator->userName);
+            $utilisateur->setImageUtilisateur("something");
 
             $password = $this->hasher->hashPassword($utilisateur, $this->generator->password);
             $utilisateur->setPassword($password);
