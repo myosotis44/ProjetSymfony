@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -30,6 +31,7 @@ class AppFixtures extends Fixture
         $this->addEtat();
         $this->addVilles();
         $this->addLieu();
+        $this->addSortie();
         //$this->addVillesCSV);
     }
 
@@ -105,6 +107,48 @@ class AppFixtures extends Fixture
         }
         $this->manager->flush();
     }
+
+    public function addSortie() {
+        // etat id , nom
+        // all in Rennes
+        $villeRennes = $this->manager->getRepository(Ville::class)->findOneBy(['nom'=>'Rennes']);
+        $campusRennes = $this->manager->getRepository(Campus::class)->findOneBy(['nom'=>'Rennes']);
+        $userTest = $this->manager->getRepository(Participant::class)->findOneBy(['mail'=>'test@test.com']);
+        $userList = $this->manager->getRepository(Participant::class)->findAll();
+
+        $sortie[0] =  ["Activité en cours","Philo","2022-07-29 10:00:00",360,"2022-07-29 00:00:00",8, 'Infos sortie \"Philo\"','Piscine - Rennes',];
+        $sortie[1] =  ["Clôturée","Origamie","2022-07-31 20:00:00",120, '2022-07-28 20:00:00',5, 'Infos sortie Origamie','Salle des Fêtes - Rennes'];
+        $sortie[2] =  ["Clôturée","Perles","2022-07-31 20:00:00",60, '2022-07-28 00:00:00',12, 'Infos sortie \"Perles\"',"Salle de Sport - Rennes"];
+        $sortie[3] =  ["Ouverte","Concert metal","2022-08-06 20:30:00",90, '2022-07-30 00:00:00',10, 'Infos sortie \"Concert metal\"','Salle des Fêtes - Rennes'];
+        $sortie[4] =  ["Ouverte","Jardinage","2022-08-11 18:30:00",180, '2022-08-07 00:00:00',5, 'Infos sortie \"Jardinage\"',"Piscine - Rennes"];
+        $sortie[5] =  ["En création","Cinéma","2022-08-13 21:00:00",90, '2022-08-13 00:00:00',10, 'Infos sortie \"Cinéma\"',"Auberge Communale - Rennes"];
+        $sortie[6] =  ["Ouverte","Pate a sel","2022-08-12 19:30:00",30, '2022-07-06 00:00:00',5, 'Infos sortie \"Pate a sel\"', "Auberge Communale - Rennes"];
+
+        for ($i=0 ; $i < 7; $i++) {
+            if ($i <= 4 ) {
+                $sortieObject = new Sortie($this->generator->randomElement($userList));
+            }
+            else {
+                $sortieObject = new Sortie($userTest);
+            }
+            $sortieObject->setEtat($this->manager->getRepository(Etat::class)->findOneBy(['libelle'=>$sortie[$i][0]]));
+            $sortieObject->setCampus($campusRennes);
+            $sortieObject->setNom($sortie[$i][1]);
+            try {
+                $sortieObject->setDateHeureDebut(new \DateTime($sortie[$i][2]));
+                $sortieObject->setDateLimiteInscription(new \DateTime($sortie[$i][4]));
+            } catch (\Exception $e) {
+                dump($e);
+            }
+            $sortieObject->setDuree($sortie[$i][3]);
+            $sortieObject->setNbInscriptionsMax($sortie[$i][5]);
+            $sortieObject->setInfosSortie($sortie[$i][6]);
+            $sortieObject->setLieu($lieuList = $this->manager->getRepository(Lieu::class)->findOneBy(['nom' => $sortie[0][7] ]));
+            $this->manager->persist($sortieObject);
+        }
+        $this->manager->flush();
+    }
+
     public function addUsers() {
         $campusList = $this->manager->getRepository(Campus::class)->findAll();
         for ($i=0 ; $i < 10; $i++) {
