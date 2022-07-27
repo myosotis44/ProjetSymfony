@@ -84,7 +84,16 @@ class Sortie
         $this->participants = new ArrayCollection();
     }
 
+    /**
+     *
+     */
     private array $actions;
+
+    /**
+     *
+     */
+    private int $nbParticipants;
+
 
 
     public function getId(): ?int
@@ -247,6 +256,18 @@ class Sortie
     public function setActions(array $actions): self
     {
         $this->actions = $actions;
+
+        return $this;
+    }
+
+    public function getNbParticipants(): ?int
+    {
+        return $this->nbParticipants;
+    }
+
+    public function setNbParticipants(int $nbParticipants): self
+    {
+        $this->nbParticipants = $nbParticipants;
 
         return $this;
     }

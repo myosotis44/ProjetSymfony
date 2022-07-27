@@ -10,12 +10,13 @@ class OutServices
 
         foreach ($filteredOuts as $eachFilteredOut) {
 
-/*        $eachFilteredOut->addParticipant($connectedUser);*/
-
-            $actions = array();
+            $nbParticipants = 0;
             $outRegisteredUser = false;
+            $actions = array();
+
 
             foreach ($eachFilteredOut->getParticipants() as $eachParticipant) {
+                $nbParticipants ++;
                 if ($eachParticipant == $connectedUser) {
                     $outRegisteredUser = true;
                 }
@@ -48,7 +49,10 @@ class OutServices
                 $actions[] = 'Se désister';
             }
 
+            $eachFilteredOut->setNbParticipants($nbParticipants);
             $eachFilteredOut->setActions($actions);
+
+
         }
 
     }

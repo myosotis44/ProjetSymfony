@@ -64,7 +64,7 @@
 
                             <td>{{ eachFilteredOut.dateLimiteInscription | date("d/m/Y") }}</td>
 
-                            <td>TODO / {{ eachFilteredOut.nbInscriptionsMax }}</td>
+                            <td>{{ eachFilteredOut.nbParticipants }} / {{ eachFilteredOut.nbInscriptionsMax }}</td>
 
                             <td>{{ eachFilteredOut.etat.libelle }}</td>
 
@@ -81,16 +81,22 @@
 
                                 {% if eachAction == 'Afficher' %}
                                     <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% elseif eachAction == 'Modifier' %}
                                     <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% elseif eachAction == 'Publier' %}
                                     <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% elseif eachAction == 'Se désister' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_unsubscribe', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% elseif eachAction == 'Annuler' %}
                                     <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% elseif eachAction == 'S\'inscrire' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_subscribe', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+
                                 {% endif %}
 
                             {% endfor %}
