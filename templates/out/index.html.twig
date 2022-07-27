@@ -74,28 +74,30 @@
                                 <td></td>
                             {% endif %}
 
-                            <td>{{ eachFilteredOut.organisateur.nom }} {{ eachFilteredOut.organisateur.prenom}}</td>
+                            <td>
+                                <a href="{{ path('app_user', {id: eachFilteredOut.organisateur.id}) }}">{{ eachFilteredOut.organisateur.nom }} {{ eachFilteredOut.organisateur.prenom}}</a>
+                            </td>
 
                             <td>
                             {% for eachAction in eachFilteredOut.actions %}
 
                                 {% if eachAction == 'Afficher' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% elseif eachAction == 'Modifier' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_edit', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% elseif eachAction == 'Publier' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% elseif eachAction == 'Se désister' %}
-                                    <a href="{{ path('out_unsubscribe', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_unsubscribe', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% elseif eachAction == 'Annuler' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_detail', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% elseif eachAction == 'S\'inscrire' %}
-                                    <a href="{{ path('out_subscribe', {id: eachFilteredOut.ID}) }}">{{ eachAction }}</a>
+                                    <a href="{{ path('out_subscribe', {id: eachFilteredOut.id}) }}">{{ eachAction }}</a>
 
                                 {% endif %}
 

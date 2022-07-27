@@ -21,7 +21,7 @@ class OutFilterFormType extends AbstractType
             ->add('outFilterCampus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'nom',
-                'label' => 'Campus'
+                'label' => 'Campus :'
             ])
             ->add('outFilterSearch', SearchType::class, [
                 'label' => 'Le nom de la sortie contient :',
@@ -29,11 +29,11 @@ class OutFilterFormType extends AbstractType
                 'required' => false
             ])
             ->add('outFilterStartDate', DateType::class, [
-                'label' => 'Entre',
+                'label' => 'Entre :',
                 'format' => 'dd MM yyyy'
             ])
             ->add('outFilterEndDate', DateType::class, [
-                'label' => 'et',
+                'label' => 'et :',
                 'format' => 'dd MM yyyy'
             ])
            ->add('outFilterChk', ChoiceType::class, [
