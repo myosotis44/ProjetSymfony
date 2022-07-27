@@ -85,4 +85,43 @@ class OutController extends AbstractController
             'sortie' => $sortieObject,
         ]);
     }
+
+
+    /**
+     * @Route("/subscribe/{id}", name="subscribe")
+     */
+    public function subscribe(SortieRepository $sortieRepository, int $id): Response
+    {
+        $result = $sortieRepository->find($id);
+
+        if(!$result) {
+            throw $this->createNotFoundException('Impossible de s\'inscrire car cette sortie n\'existe pas');
+        }
+        else {
+            $result->addParticipant($this->getUser());
+            $sortieRepository->add($result, true);
+        }
+
+        return $this->redirectToRoute('out_index');
+    }
+
+
+    /**
+     * @Route("/unsubscribe/{id}", name="unsubscribe")
+     */
+    public function unsubscribe(SortieRepository $sortieRepository, int $id): Response
+    {
+        $result = $sortieRepository->find($id);
+
+        if(!$result) {
+            throw $this->createNotFoundException('Impossible de se désinscrire car cette sortie n\'existe pas');
+        }
+        else {
+            $result->removeParticipant($this->getUser());
+            $sortieRepository->add($result, true);
+        }
+
+        return $this->redirectToRoute('out_index');
+    }
 }
+
