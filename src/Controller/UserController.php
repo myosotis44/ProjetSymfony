@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
+use App\Form\CsvType;
 use App\Form\UserType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Csv\Exception;
+use League\Csv\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
@@ -92,5 +96,101 @@ class UserController extends AbstractController
             'userForm' => $userForm->createView()
         ]);
     }
+
+    /**
+     * @Route("/admin/user_register", name="user_register")
+     */
+    public function register_user(Request $request, EntityManagerInterface $entityManager,
+                                  UserPasswordHasherInterface $userPasswordHasher) {
+
+        $user = new Participant();
+        $userForm = $this->createForm(UserType::class, $user);
+        $userForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $userForm->get('password')->getData()
+                )
+            );
+            $user->setActif(true);
+            $user->setRoles(["ROLE_USER"]);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Utilisateur créé!');
+
+            return $this->redirectToRoute('main_home');
+
+        }
+        return $this->render('user/create.html.twig', [
+            'userForm' => $userForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user_register_csv", name="user_register_csv")
+     */
+    public function register_user_csv(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher) {
+        $user = new Participant();
+        $userForm = $this->createForm(CsvType::class);
+        $userForm->handleRequest($request);
+
+        $fichierCsv = $userForm->get('fichier_csv')->getData();
+        if ($userForm->isSubmitted()) {
+
+            try {
+                $fichierCsv->move(
+                    $this->getParameter('csv_directory'),
+                    $fichierCsv
+                );
+            } catch (FileException $e) {
+                error_log($e->getMessage());
+            }
+
+            try {
+                $reader = Reader::createFromPath(pathinfo($fichierCsv->getClientOriginalName(), PATHINFO_FILENAME));
+                $reader->setHeaderOffset(0);
+                $records =$reader->getRecords();
+                dump($records);
+                foreach ($records as $offset => $record) {
+                    foreach ($record as $utilisateurValues) {
+                        $utilisateurInfo = explode(";",$utilisateurValues);
+                        $utilisateurObject = new Participant();
+                        $utilisateurObject->setPseudo(ucwords(strtolower($utilisateurInfo[1])));
+                        $utilisateurObject->setPrenom(ucwords(strtolower($utilisateurInfo[2])));
+                        $utilisateurObject->setNom(ucwords(strtolower($utilisateurInfo[3])));
+                        $utilisateurObject->setTelephone($utilisateurInfo[4]);
+                        $utilisateurObject->setMail($utilisateurInfo[5]);
+                        $utilisateurObject->setPassword($utilisateurInfo[6]);
+                        $utilisateurObject->setCampus($utilisateurInfo[7]);
+                        $utilisateurObject->setActif(true);
+                        $utilisateurObject->setRoles(["ROLE_USER"]);
+
+                        $user->setPassword(
+                            $userPasswordHasher->hashPassword(
+                                $user,
+                                $userForm->get('password')->getData()
+                            )
+                        );
+                        $this->$manager->persist($utilisateurObject);
+
+                    }
+                }
+                $this->$manager->flush();
+            }
+            catch (Exception $exception) {
+                dump($exception->getMessage());
+            }
+
+        }
+        return $this->render('user/create_csv.html.twig', [
+            'userForm' => $userForm->createView()
+        ]);
+
+    }
+
 }
 

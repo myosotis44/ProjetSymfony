@@ -40,7 +40,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Le champ est vide.")
+     * @Assert\Blank(message="Le champ est vide.")
      */
     private $password;
 

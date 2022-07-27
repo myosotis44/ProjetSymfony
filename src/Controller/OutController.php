@@ -52,12 +52,12 @@ class OutController extends AbstractController
                             EtatRepository $etatRepository): Response {
 
         $sortie = new Sortie($this->getUser());
+        $etatInitial = $etatRepository->findOneBy(['libelle'=>'En création']);
+        $sortie->setEtat($etatInitial);
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
-        $etatInitial = $etatRepository->findOneBy(['libelle'=>'En création']);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-            $sortie->setEtat($etatInitial);
             $entityManager->persist($sortie);
             $entityManager->flush();
 
