@@ -7,7 +7,9 @@ use App\Form\Model\OutFilterFormModel;
 use App\Form\OutFilterFormType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use App\Services\OutServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,11 +50,16 @@ class OutController extends AbstractController
      */
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
-                            EtatRepository $etatRepository): Response {
+                            EtatRepository $etatRepository,
+                            LieuRepository $lieuRepository): Response {
 
         $sortie = new Sortie($this->getUser());
         $etatInitial = $etatRepository->findOneBy(['libelle'=>'En création']);
         $sortie->setEtat($etatInitial);
+        $lieuInitial = $lieuRepository->findOneBy(['nom'=>'Piscine - Rennes']);
+        $sortie->setLieu($lieuInitial);
+        $sortie->setDateHeureDebut(new \DateTime());
+        $sortie->setDateLimiteInscription(new \DateTime());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 

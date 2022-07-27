@@ -65,7 +65,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $actif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity=Campus::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
