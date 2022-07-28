@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Form\CreationLieuType;
@@ -27,7 +28,10 @@ class OutController extends AbstractController
     /**
      * @Route("", name="index")
      */
-    public function index(Request $request, SortieRepository $sortieRepository, OutServices $outServices): Response
+    public function index(Request $request,
+                          EntityManagerInterface $entityManager,
+                          SortieRepository $sortieRepository,
+                          OutServices $outServices): Response
     {
         $filteredOuts = null;
 
@@ -40,7 +44,14 @@ class OutController extends AbstractController
             $filteredOuts = $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
         else {
-            $filteredOuts = $sortieRepository->returnActive();
+            $campusList = $entityManager->getRepository(Campus::class)->findAll();
+            $filter->outFilterChk = [];
+            $filter->outFilterCampus = $campusList[0];
+            $filter->outFilterSearch = null;
+            $filter->outFilterStartDate = new \DateTime();
+            $filter->outFilterEndDate = new \DateTime('now + 1 Month');
+            $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter, $this->getUser());
+            $filteredOuts = $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
 
         return $this->render('out/index.html.twig', [
