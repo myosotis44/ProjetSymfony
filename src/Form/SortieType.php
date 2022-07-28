@@ -37,7 +37,6 @@ class SortieType extends AbstractType
                 'label' => 'Date et heure de la sortie :',
                 'html5' => false,
                 'widget' => 'single_text',
-                'data' => (new \DateTime())->modify('+1 week'),
                 'format' => 'dd MM yyyy',
                 'model_timezone' => 'Europe/Paris'
 
@@ -46,7 +45,6 @@ class SortieType extends AbstractType
                 'label' => 'Date limite d\'inscription :',
                 'html5' => false,
                 'widget' => 'single_text',
-                'data' => (new \DateTime())->modify('+1 month'),
                 'format' => 'dd MM yyyy',
                 'model_timezone' => 'Europe/Paris'
             ])

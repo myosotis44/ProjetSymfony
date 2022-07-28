@@ -36,7 +36,6 @@
                         <input type="datetime-local"
                                id="{{ field_name(sortieForm.dateLimiteInscription) }}"
                                name="{{ field_name(sortieForm.dateLimiteInscription) }}"
-                               value="{{ "now"|date_modify("+6 days")|date('Y-m-d\\Th:i') }}"
                                min="{{ "now"|date_modify("+1 day")|date('Y-m-d\\Th:i') }}"
                                max="{{ "now"|date_modify("+2 years")|date('Y-m-d\\Th:i') }}"
                                class="form-control"

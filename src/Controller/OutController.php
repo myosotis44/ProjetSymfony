@@ -73,8 +73,6 @@ class OutController extends AbstractController
         $sortie->setEtat($etatInitial);
         $lieuInitial = $lieuRepository->findOneBy(['nom'=>'Piscine - Rennes']);
         $sortie->setLieu($lieuInitial);
-        $sortie->setDateHeureDebut(new \DateTime());
-        $sortie->setDateLimiteInscription(new \DateTime());
         $sortieForm = $this->createForm(SortieType::class, $sortie);
         $sortieForm->handleRequest($request);
 
