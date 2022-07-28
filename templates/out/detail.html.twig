@@ -17,7 +17,7 @@
                     <p>Date et heure de la sortie :</p>
                 </div>
                 <div class="col-7">
-                    {{ sortie.dateHeureDebut | date('d/m/Y à h:i') }}
+                    {{ sortie.dateHeureDebut | date('d/m/Y à H:i') }}
                 </div>
             </div>
             <div class="row">
@@ -25,7 +25,7 @@
                     <p>Date limite d'inscription :</p>
                 </div>
                 <div class="col-7">
-                    {{ sortie.dateLimiteInscription | date('d/m/Y') }}
+                    {{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }}
                 </div>
             </div>
             <div class="row">
@@ -41,12 +41,12 @@
                     <p>Durée :</p>
                 </div>
                 <div class="col-7">
-                    {{ sortie.duree }}mins
+                    {{ sortie.duree }} minutes
                 </div>
             </div>
             <div class="row">
                 <div class ="col-5">
-                    <p>Descriptions et infos :</p>
+                    <p>Description et infos :</p>
                 </div>
                 <div class="col-7">
                     {{ sortie.infosSortie }}

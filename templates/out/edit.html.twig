@@ -98,25 +98,23 @@
             </div>
         </div>
 
-
         <div class="row justify-content-center">
             <div class="col-1"></div>
-            <div class="col-3">
-                <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-success btn-lg">Publier la sortie</button>
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-danger btn-lg">Supprimer la sortie</button>
-            </div>
-            <div class="col-2">
-                <button type="reset" class="btn btn-danger btn-lg">Annuler</button>
-            </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntEnregistrer) }}
+                </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntPublier) }}
+                </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntSupprimer) }}
+                </div>
+                <div class="col-2">
+                    {{ form_widget(sortieForm.btnAnnuler) }}
+                </div>
         </div>
 
         {{ form_end(sortieForm) }}
-
 
     </div>
 {% endblock %}
@@ -124,22 +122,3 @@
 {% block title %}
 
 {% endblock %}
-{#
-
-<div class="row justify-content-center">
-    <div class="col-1"></div>
-    <div class="col-3">
-        <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
-    </div>
-    <div class="col-3">
-        <button class="btn btn-success btn-lg">Publier la sortie</button>
-    </div>
-    <div class="col-3">
-        <button class="btn btn-danger btn-lg">Supprimer la sortie</button>
-    </div>
-    <div class="col-2">
-        <button class="btn btn-danger btn-lg">Annuler</button>
-    </div>
-</div>
-
-#}
