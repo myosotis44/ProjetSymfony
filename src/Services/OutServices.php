@@ -59,6 +59,9 @@ class OutServices
                     $this->sortieRepository->add($eachFilteredOut, true);
                 }
                 else {
+                    if ($eachFilteredOut->getOrganisateur() == $connectedUser) {
+                        $actions[] = 'Annuler';
+                    }
                     if ($outRegisteredUser) {
                         $actions[] = 'Se désister';
                     }
@@ -67,8 +70,25 @@ class OutServices
 
             if ($eachFilteredOut->getEtat()->getLibelle() === 'Activité en cours') {
 
-/**/                if ( new \DateTime() > $eachFilteredOut->getDateHeureDebut()) { // + $eachFilteredOut->getDuree()) {
+                $DateHeureDebut = new \DateTime($eachFilteredOut->getDateHeureDebut()->format('d-m-Y H:i'));
+                $duree = $eachFilteredOut->getDuree();
+                $DateHeureFin = $DateHeureDebut->modify("+ $duree minutes");
+
+                if ( new \DateTime() > $DateHeureFin) {
                     $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité Terminée']));
+                    $this->sortieRepository->add($eachFilteredOut, true);
+                }
+            }
+
+            if ($eachFilteredOut->getEtat()->getLibelle() === 'Activité Terminée' ||
+                $eachFilteredOut->getEtat()->getLibelle() === 'Annulée') {
+
+                $DateHeureDebut = new \DateTime($eachFilteredOut->getDateHeureDebut()->format('d-m-Y H:i'));
+                $duree = $eachFilteredOut->getDuree() + (30 * 24 * 60);
+                $DateHeureHistorisation = $DateHeureDebut->modify("+ $duree minutes");
+
+                if ( new \DateTime() > $DateHeureHistorisation) {
+                    $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité Historisée']));
                     $this->sortieRepository->add($eachFilteredOut, true);
                 }
             }
@@ -76,66 +96,9 @@ class OutServices
             $eachFilteredOut->setNbParticipants($eachFilteredOut->getParticipants()->count());
 
             $eachFilteredOut->setActions($actions);
-
         }
 
         return $filteredOuts;
 
     }
 }
-
-
-/*
-            switch ($eachFilteredOut->getEtat()->getLibelle()) {
-
-                case 'En création' :
-                    if ($eachFilteredOut->getOrganisateur() == $connectedUser) {
-                        $actions[] = 'Modifier';
-                        $actions[] = 'Publier';
-                    }
-                    else {
-                        $actions[] = 'Afficher';
-                    }
-                    break;
-
-                case 'Ouverte' :
-                    if (new \DateTime() > $eachFilteredOut->getDateLimiteInscription()) {
-                        $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Clôturée']));
-                        $this->sortieRepository->add($eachFilteredOut, true);
-                    }
-                    else {
-                        if ($eachFilteredOut->getOrganisateur() == $connectedUser) {
-                            $actions[] = 'Annuler';
-                        }
-                        if ($outRegisteredUser) {
-                            $actions[] = 'Se désister';
-                        }
-                        else {
-                            $actions[] = 'S\'inscrire';
-                        }
-                    }
-                    break;
-
-                case 'Clôturée' :
-                    if (new \DateTime() > $eachFilteredOut->getDateHeureDebut()) {
-                        $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité en cours']));
-                        $this->sortieRepository->add($eachFilteredOut, true);
-                    }
-                    else {
-                        if ($outRegisteredUser) {
-                            $actions[] = 'Se désister';
-                        }
-                    }
-                    break;
-
-                case 'Activité en cours' :
-               if (new \DateTime() > $eachFilteredOut->getDateHeureDebut()) { // + $eachFilteredOut->getDuree()) {
-    $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité Terminée']));
-    $this->sortieRepository->add($eachFilteredOut, true);
-}
-break;
-
-}
-
-
-*/

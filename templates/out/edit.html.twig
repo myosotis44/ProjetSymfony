@@ -95,6 +95,38 @@
                         {{ form_widget(sortieForm.lieu) }}
                     </div>
                 </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.rue) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.rue) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.codePostal) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.codePostal) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.latitude) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.latitude) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.longitude) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.longitude) }}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -120,5 +152,12 @@
 {% endblock %}
 
 {% block title %}
+{% endblock %}
 
+{% block xtraJS %}
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('js/sortie.js')}}"></script>
 {% endblock %}
