@@ -182,8 +182,6 @@ class AppFixtures extends Fixture
         $utilisateur->setPassword($password);
         $this->manager->persist($utilisateur);
 
-        $this->manager->flush();
-
         $admin = new Participant();
         $admin->setRoles(["ROLE_ADMIN"]);
         $admin->setActif(true);

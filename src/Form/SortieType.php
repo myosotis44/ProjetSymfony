@@ -24,7 +24,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class SortieType extends AbstractType
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager) {
         $this->entityManager = $entityManager;
@@ -68,6 +68,9 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 'class' => Ville::class,
             ])
+            ->add('lieu', TextType::class, [
+                'mapped' => false,
+            ])
             ->addEventListener(
                 FormEvents::POST_SET_DATA,
                 function (FormEvent $event) {
@@ -106,7 +109,6 @@ class SortieType extends AbstractType
                             'disabled' => true,
                         ])
                         ->get('longitude')->setData($data->getLieu()->getLongitude());
-
                 })
             ->get('ville')->addEventListener(
                 FormEvents::POST_SUBMIT,
@@ -121,11 +123,17 @@ class SortieType extends AbstractType
                             return $er->createQueryBuilder('l')
                                 ->where('l.ville = :val')
                                 ->setParameter('val', $id);
+                            //dump($newLieu->getQuery()->getFirstResult());
                         }
                     ]);
-                    $fullData = $this->entityManager->getRepository(Lieu::class);
-                    $data = $fullData->find($form->getParent()->get('lieu')->getData()->getId());
-                    $form->getParent()->get('rue')->setData($data->getRue());
+                    $ville = $this->entityManager->getRepository(Ville::class)->findBy(['id' => $id]);
+//                    dump($ville);
+//                    dump($id);
+//                    dump($form->getParent()->get('ville'));
+                    $data = $this->entityManager->getRepository(Lieu::class)->findBy(['ville' => $ville]);
+                    //$data = $fullData->find($form->getParent()->get('lieu')->getData()->getId());
+
+                    $form->getParent()->get('rue')->setData($data[0]->getRue());
                     $form->getParent()
                         ->add('codePostal', TextType::class, [
                             'label' => 'Code Postal:',
@@ -133,13 +141,17 @@ class SortieType extends AbstractType
                             'disabled' => true,
                         ])
                         ->get('codePostal')
-                        ->setData($data->getVille()->getCodePostal());
-                    $form->getParent()->get('latitude')->setData($data->getLatitude());
-                    $form->getParent()->get('longitude')->setData($data->getLongitude());
-                    dump($data);
+                        ->setData($data[0]->getVille()->getCodePostal());
+                    $form->getParent()->get('latitude')->setData($data[0]->getLatitude());
+                    $form->getParent()->get('longitude')->setData($data[0]->getLongitude());
+
+//                    dump($data);
+//                    dump($form->getParent()->get('lieu'));
 
                 }
-            );
+            )
+
+        ;
 
     }
 
