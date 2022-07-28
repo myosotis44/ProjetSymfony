@@ -95,51 +95,69 @@
                         {{ form_widget(sortieForm.lieu) }}
                     </div>
                 </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.rue) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.rue) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.codePostal) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.codePostal) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.latitude) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.latitude) }}
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-5">
+                        {{ form_label(sortieForm.longitude) }}
+                    </div>
+                    <div class="col-7">
+                        {{ form_widget(sortieForm.longitude) }}
+                    </div>
+                </div>
             </div>
         </div>
-
 
         <div class="row justify-content-center">
             <div class="col-1"></div>
-            <div class="col-3">
-                <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-success btn-lg">Publier la sortie</button>
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-danger btn-lg">Supprimer la sortie</button>
-            </div>
-            <div class="col-2">
-                <button type="reset" class="btn btn-danger btn-lg">Annuler</button>
-            </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntEnregistrer) }}
+                </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntPublier) }}
+                </div>
+                <div class="col-3">
+                    {{ form_widget(sortieForm.bntSupprimer) }}
+                </div>
+                <div class="col-2">
+                    {{ form_widget(sortieForm.btnAnnuler) }}
+                </div>
         </div>
 
         {{ form_end(sortieForm) }}
-
 
     </div>
 {% endblock %}
 
 {% block title %}
-
 {% endblock %}
-{#
 
-<div class="row justify-content-center">
-    <div class="col-1"></div>
-    <div class="col-3">
-        <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
-    </div>
-    <div class="col-3">
-        <button class="btn btn-success btn-lg">Publier la sortie</button>
-    </div>
-    <div class="col-3">
-        <button class="btn btn-danger btn-lg">Supprimer la sortie</button>
-    </div>
-    <div class="col-2">
-        <button class="btn btn-danger btn-lg">Annuler</button>
-    </div>
-</div>
-
-#}
+{% block xtraJS %}
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="{{ asset('js/sortie.js')}}"></script>
+{% endblock %}

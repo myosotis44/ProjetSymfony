@@ -9,9 +9,9 @@ use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
-use App\Repository\VilleRepository;
 use App\Services\OutServices;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -99,17 +99,25 @@ class OutController extends AbstractController
     /**
      * @Route("/{id}/subscribe", name="subscribe")
      */
-    public function subscribe(SortieRepository $sortieRepository, int $id): Response
+    public function subscribe(EtatRepository $etatRepository, SortieRepository $sortieRepository, int $id): Response
     {
-        $result = $sortieRepository->find($id);
+        $sortie = $sortieRepository->find($id);
 
-        if(!$result) {
+        if(!$sortie) {
             throw $this->createNotFoundException('Impossible de s\'inscrire car cette sortie n\'existe pas');
         }
+        elseif ($sortie->getEtat()->getLibelle() != 'Ouverte') {
+            throw $this->createNotFoundException('Impossible de s\'inscire à une sortie qui n\'est plus ouverte !!');
+        }
 
-        $result->addParticipant($this->getUser());
-        $sortieRepository->add($result, true);
-        $this->addFlash('success', 'Félicitation, vous venez de vous inscrire à la sortie : ' . $result->getNom());
+        $sortie->addParticipant($this->getUser());
+
+        if ($sortie->getParticipants()->count() >= $sortie->getNbInscriptionsMax()) {
+            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Clôturée']));
+        };
+
+        $sortieRepository->add($sortie, true);
+        $this->addFlash('success', 'Félicitations ! Vous venez de vous inscrire à la sortie "' . $sortie->getNom()) . '"';
 
         return $this->redirectToRoute('out_index');
     }
@@ -118,17 +126,25 @@ class OutController extends AbstractController
     /**
      * @Route("/{id}/unsubscribe", name="unsubscribe")
      */
-    public function unsubscribe(SortieRepository $sortieRepository, int $id): Response
+    public function unsubscribe(EtatRepository $etatRepository, SortieRepository $sortieRepository, int $id): Response
     {
-        $result = $sortieRepository->find($id);
+        $sortie = $sortieRepository->find($id);
 
-        if(!$result) {
+        if(!$sortie) {
             throw $this->createNotFoundException('Impossible de se désinscrire car cette sortie n\'existe pas');
         }
+        elseif ($sortie->getEtat()->getLibelle() != 'Ouverte') {
+            throw $this->createNotFoundException('Impossible de se désinscire d\'une sortie qui n\'est plus ouverte !!');
+        }
 
-        $result->removeParticipant($this->getUser());
-        $sortieRepository->add($result, true);
-        $this->addFlash('success', 'Désolé de ne plus pouvoir compter sur votre présence lors de notre sortie : ' . $result->getNom() . ' ...');
+        $sortie->removeParticipant($this->getUser());
+
+        if ($sortie->getParticipants()->count() < $sortie->getNbInscriptionsMax()) {
+            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+        };
+
+        $sortieRepository->add($sortie, true);
+        $this->addFlash('success', 'Désolé de ne plus pouvoir compter sur votre présence lors de notre sortie "' . $sortie->getNom() . '" ...');
 
         return $this->redirectToRoute('out_index');
     }
@@ -137,19 +153,50 @@ class OutController extends AbstractController
     /**
      * @Route("/{id}/edit", name="edit")
      */
-    public function edit(Request $request, SortieRepository $sortieRepository, int $id) : Response {
+    public function edit(Request $request, EtatRepository $etatRepository, SortieRepository $sortieRepository, int $id) : Response {
 
         $sortie = $sortieRepository->find($id);
-        dump($sortie->getInfosSortie());
 
         if(!$sortie) {
-            throw $this->createNotFoundException('Impossible de se modifier une sortie qui n\'existe pas');
+            throw $this->createNotFoundException('Impossible de modifier une sortie qui n\'existe pas');
+        }
+        elseif ($sortie->getEtat()->getLibelle() != 'En création') {
+            throw $this->createNotFoundException('Impossible de modifier une sortie qui n\'est plus en état de Création !!');
         }
 
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie)
+            ->add('bntEnregistrer', SubmitType::class, [
+                'label' => 'Enregistrer'
+            ])
+            ->add('bntPublier', SubmitType::class, [
+                'label' => 'Publier la sortie'
+            ])
+            ->add('bntSupprimer', SubmitType::class, [
+                'label' => 'Supprimer la sortie'
+            ])
+            ->add('btnAnnuler', SubmitType::class, [
+                'label' => 'Annuler'
+            ]);
 
         $sortieForm->handleRequest($request);
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+
+        if ($sortieForm->get('bntPublier')->isClicked()) {
+            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+            $sortieRepository->add($sortie, true);
+            $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a été publiée avec succès !');
+            return $this->redirectToRoute('out_detail', ['id' => $sortie->getId()]);
+        }
+
+        elseif ($sortieForm->get('bntSupprimer')->isClicked()) {
+            $sortieRepository->remove($sortie, true);
+            $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a bien été supprimée !');
+            return $this->redirectToRoute('out_index');
+        }
+        elseif ($sortieForm->get('btnAnnuler')->isClicked()) {
+            return $this->redirectToRoute('out_index');
+        }
+        elseif ($sortieForm->get('bntEnregistrer')->isSubmitted() && $sortieForm->isValid()) {
             $sortieRepository->add($sortie, true);
             $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a bien été modifée !');
             return $this->redirectToRoute('out_detail', ['id' => $sortie->getId()]);
