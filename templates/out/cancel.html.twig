@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h1 class="text-center h1">Annuler une sortie</h1>
+<div class="col-10 m-auto my-5">
+    <div class="row">
+        <div class="col-6">
+            <div class="row mb-4">
+                <label class="col-5">Nom de la sortie: </label>
+                {{ sortie.nom }}
+            </div>
+            <div class="row mb-4">
+                <label class="col-5">Date de la sortie: </label>
+                {{ sortie.dateHeureDebut|date("d/m/Y") }}
+            </div>
+            <div class="row mb-4">
+                <label class="col-5">Campus: </label>
+                {{ sortie.campus.nom }}
+            </div>
+            <div class="row mb-4">
+                <label class="col-5">Lieu: </label>
+                {{ sortie.lieu.nom }}
+            </div>
+            <div class="row mb-4">
+                <label for="motif" class="col-5">Motif: </label>
+                <textarea id="motif"></textarea>
+            </div>
+            <button type="submit">Enregistrer</button>
+            <button type="reset">Annuler</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

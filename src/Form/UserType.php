@@ -47,8 +47,8 @@ class UserType extends AbstractType
                         'message'=>'Entrez un mot de passe s\'il vous plait'
                     ]),
                     new Length([
-                        'min'=> 6,
-                        'minMessage'=> 'Le mot de passe doit faire au moins 6 caractères.',
+                        'min'=> 5,
+                        'minMessage'=> 'Le mot de passe doit faire au moins 5 caractères.',
                         'max'=>100
                     ])
                 ]
@@ -62,8 +62,8 @@ class UserType extends AbstractType
                         'message'=>'Entrez un mot de passe s\'il vous plait'
                     ]),
                     new Length([
-                        'min'=> 6,
-                        'minMessage'=> 'Le mot de passe doit faire au moins 6 caractères.',
+                        'min'=> 4,
+                        'minMessage'=> 'Le mot de passe doit faire au moins 5 caractères.',
                         'max'=>100
                     ])
                 ]
