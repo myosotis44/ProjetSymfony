@@ -80,8 +80,8 @@ class OutController extends AbstractController
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
-            if($request->get('Publier') == "") {
-                $etatPublier = $etatRepository->findOneBy(['libelle'=>'Ouverte']);
+            if($sortieForm->get('publier')->isClicked()) {
+                $etatPublier = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
                 $sortie = $sortie->setEtat($etatPublier);
             }
             $entityManager->persist($sortie);

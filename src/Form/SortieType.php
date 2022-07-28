@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,15 +36,19 @@ class SortieType extends AbstractType
             ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie :',
                 'html5' => false,
-                'data' => new \DateTime(),
-                'format' => 'dd MM yyyy'
+                'widget' => 'single_text',
+                'data' => (new \DateTime())->modify('+1 week'),
+                'format' => 'dd MM yyyy',
+                'model_timezone' => 'Europe/Paris'
 
             ])
             ->add('dateLimiteInscription', DateTimeType::class, [
                 'label' => 'Date limite d\'inscription :',
                 'html5' => false,
-                'data' => new \DateTime(),
-                'format' => 'dd MM yyyy'
+                'widget' => 'single_text',
+                'data' => (new \DateTime())->modify('+1 month'),
+                'format' => 'dd MM yyyy',
+                'model_timezone' => 'Europe/Paris'
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre de places :',
@@ -67,6 +72,15 @@ class SortieType extends AbstractType
             ])
             ->add('lieu', TextType::class, [
                 'mapped' => false,
+            ])
+            ->add('creer', SubmitType::class, [
+                'label' => 'Enregistrer',
+            ])
+            ->add('publier', SubmitType::class, [
+                'label' => 'Publier'
+            ])
+            ->add('annuler', SubmitType::class, [
+                'label' => 'Annuler'
             ])
             ->addEventListener(
                 FormEvents::POST_SET_DATA,
@@ -147,6 +161,7 @@ class SortieType extends AbstractType
 
                 }
             )
+
         ;
 
     }

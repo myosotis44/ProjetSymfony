@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1 class="text-center h1">Créer une sortie</h1>
-    <div class="col-10 m-auto my-5 createForm">
+    <div class="col-10 m-auto my-5" id="idForm">
         {{ form_start(sortieForm) }}
         <div class="row">
             <div class="col-6">
@@ -18,21 +18,34 @@
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col-5">{{ form_label(sortieForm.dateHeureDebut) }}</div>
+                    <label class="col-5" for="{{ field_name(sortieForm.dateHeureDebut) }}">Date et heure de la sortie: </label>
                     <div class="col-6">
-                        {{ form_widget(sortieForm.dateHeureDebut) }}
+                        <input type="datetime-local"
+                               id="{{ field_name(sortieForm.dateHeureDebut) }}"
+                               name="{{ field_name(sortieForm.dateHeureDebut) }}"
+                               value="{{ "now"|date_modify("+7 days")|date('Y-m-d\\Th:i') }}"
+                               min="{{ "now"|date_modify("+1 day")|date('Y-m-d\\Th:i') }}"
+                               max="{{ "now"|date_modify("+2 years")|date('Y-m-d\\Th:i') }}"
+                               class="form-control"
+                        >
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col-5"> {{ form_label(sortieForm.dateLimiteInscription) }}
-                    </div>
+                    <label class="col-5" for="{{ field_name(sortieForm.dateLimiteInscription) }}">Date limite d'inscription: </label>
                     <div class="col-6">
-                        {{ form_widget(sortieForm.dateLimiteInscription) }}
+                        <input type="datetime-local"
+                               id="{{ field_name(sortieForm.dateLimiteInscription) }}"
+                               name="{{ field_name(sortieForm.dateLimiteInscription) }}"
+                               value="{{ "now"|date_modify("+6 days")|date('Y-m-d\\Th:i') }}"
+                               min="{{ "now"|date_modify("+1 day")|date('Y-m-d\\Th:i') }}"
+                               max="{{ "now"|date_modify("+2 years")|date('Y-m-d\\Th:i') }}"
+                               class="form-control"
+                        >
                     </div>
                 </div>
                 <div class="row mb-4">
                     <label class="col-5" for="{{ field_name(sortieForm.nbInscriptionsMax) }}">Nombre de places: </label>
-                    <div class="col-2">
+                    <div class="col-3">
                         <input type="number"
                                id="{{ field_name(sortieForm.nbInscriptionsMax) }}"
                                name="{{ field_name(sortieForm.nbInscriptionsMax) }}"
@@ -43,11 +56,11 @@
                 </div>
                 <div class="row mb-4">
                     <label class="col-5" for="{{ field_name(sortieForm.duree) }}">Durée: </label>
-                    <div class="col-2">
+                    <div class="col-3">
                         <input type="number"
                                id="{{ field_name(sortieForm.duree) }}"
                                name="{{ field_name(sortieForm.duree) }}"
-                               value="90"
+                               value="60"
                                class="form-control text-end"
                         >
                     </div>
@@ -134,20 +147,17 @@
         <div class="row justify-content-center">
             <div class="col-1"></div>
             <div class="col-3">
-                <input type="submit" name="Créer" class="btn btn-primary btn-lg" value="Enregistrer">
+                {{ form_widget(sortieForm.creer) }}
             </div>
             <div class="col-3">
-                <button type="submit" name="Publier" class="btn btn-success btn-lg">Publier la sortie</button>
+                {{ form_widget(sortieForm.publier) }}
             </div>
             <div class="col-3">
-                <button type="button" class="btn btn-danger btn-lg">Annuler</button>
+                {{ form_widget(sortieForm.annuler) }}
             </div>
         </div>
         {{ form_end(sortieForm) }}
     </div>
-
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -190,7 +200,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Lieu</button>
+                    <button type="submit" class="btn btn-success">Créer</button>
                 </div>
                 {{ form_end(lieuForm) }}
             </div>

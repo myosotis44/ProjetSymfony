@@ -71,6 +71,17 @@ $(function() {
         });
     })
 
+    let formSortie = document.getElementById('idForm');
+    let sortieButtons = formSortie.getElementsByTagName('button')
+    for (let i = 0; i < sortieButtons.length; i++) {
+        sortieButtons[i].classList.add('btn-lg')
+        if (i==2) {
+            sortieButtons[i].classList.add('btn-success')
+        }
+        if (i==3) {
+            sortieButtons[i].classList.add('btn-danger')
+        }
+    }
 })
 
 function ajaxFunctions(p1) {
