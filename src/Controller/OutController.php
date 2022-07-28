@@ -47,9 +47,8 @@ class OutController extends AbstractController
             $campusList = $entityManager->getRepository(Campus::class)->findAll();
             $filter->outFilterChk = [];
             $filter->outFilterCampus = $campusList[0];
-            $filter->outFilterSearch = null;
-            $filter->outFilterStartDate = new \DateTime();
-            $filter->outFilterEndDate = new \DateTime('now + 1 Month');
+            $filter->outFilterStartDate = new \DateTime('now - 1 day');
+
             $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter, $this->getUser());
             $filteredOuts = $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
@@ -67,8 +66,8 @@ class OutController extends AbstractController
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
                             EtatRepository $etatRepository,
+                            SortieRepository $sortieRepository,
                             LieuRepository $lieuRepository): Response {
-
 
         $lieu = new Lieu();
         $lieuForm = $this->createForm(CreationLieuType::class, $lieu);
@@ -84,20 +83,32 @@ class OutController extends AbstractController
         $sortie->setEtat($etatInitial);
         $lieuInitial = $lieuRepository->findOneBy(['nom'=>'Piscine - Rennes']);
         $sortie->setLieu($lieuInitial);
-        $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm = $this->createForm(SortieType::class, $sortie)
+            ->add('bntEnregistrer', SubmitType::class, [
+                'label' => 'Enregistrer'
+            ])
+            ->add('bntPublier', SubmitType::class, [
+                'label' => 'Publier la sortie'
+            ])
+            ->add('btnAnnuler', SubmitType::class, [
+                'label' => 'Annuler'
+            ]);
+
         $sortieForm->handleRequest($request);
 
-        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
-
-            if($sortieForm->get('publier')->isClicked()) {
-                $etatPublier = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
-                $sortie = $sortie->setEtat($etatPublier);
-            }
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Sortie ajoutée avec succès!');
-            return $this->redirectToRoute('main_home');
+        if ($sortieForm->get('bntPublier')->isClicked()) {
+            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+            $sortieRepository->add($sortie, true);
+            $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a été publiée avec succès !');
+            return $this->redirectToRoute('out_detail', ['id' => $sortie->getId()]);
+        }
+        elseif ($sortieForm->get('btnAnnuler')->isClicked()) {
+            return $this->redirectToRoute('out_index');
+        }
+        elseif ($sortieForm->get('bntEnregistrer')->isSubmitted() && $sortieForm->isValid()) {
+            $sortieRepository->add($sortie, true);
+            $this->addFlash('success', 'La sortie "' . $sortie->getNom() . '" a bien été ajoutée !');
+            return $this->redirectToRoute('out_detail', ['id' => $sortie->getId()]);
         }
 
         return $this->render('out/create.html.twig', [
@@ -236,7 +247,6 @@ class OutController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/{id}/cancel", name="cancel")
      */
@@ -247,7 +257,7 @@ class OutController extends AbstractController
         if(!$sortie) {
             throw $this->createNotFoundException('Impossible d\'annuler cette sortie car elle n\'existe pas');
         }
-        elseif ($sortie->getEtat()->getLibelle() != 'Clôturée' && $sortie->getEtat()->getLibelle() != 'Activité en cours') {
+        elseif ($sortie->getEtat()->getLibelle() != 'Ouverte' && $sortie->getEtat()->getLibelle() != 'Clôturée') {
             throw $this->createNotFoundException('Impossible d\'annuler une activité qui n\'est pas encore en cours !!');
         }
 

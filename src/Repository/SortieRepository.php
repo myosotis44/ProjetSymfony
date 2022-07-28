@@ -54,8 +54,8 @@ class SortieRepository extends ServiceEntityRepository
 
         if (in_array('ChkNotSub', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
-                ->leftJoin('o.participants', 'q')
-                ->andWhere('q.mail = :connectedUserMail')
+                ->innerJoin('o.participants', 'q')
+                ->andWhere('q.mail != :connectedUserMail')
                 ->setParameter('connectedUserMail', $connectedUser->getMail());
         }
 
@@ -87,7 +87,8 @@ class SortieRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->andWhere('o.campus = :campus')
-            ->setParameter('campus', $outFilterFormModel->outFilterCampus);
+            ->setParameter('campus', $outFilterFormModel->outFilterCampus)
+            ->orderBy('o.dateHeureDebut');
 
         $query = $queryBuilder->getQuery();
 

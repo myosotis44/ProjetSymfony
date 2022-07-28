@@ -11,9 +11,6 @@ class OutFilterFormModel
 
     public $outFilterSearch;
 
-    /**
-     * @Assert\GreaterThanOrEqual("Today", message="Cette dâte ne peut pas être antérieure à la dâte du jour !")
-     */
     public \DateTime $outFilterStartDate;
 
     /**

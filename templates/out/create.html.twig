@@ -23,8 +23,7 @@
                         <input type="datetime-local"
                                id="{{ field_name(sortieForm.dateHeureDebut) }}"
                                name="{{ field_name(sortieForm.dateHeureDebut) }}"
-                               value="{{ "now"|date_modify("+7 days")|date('Y-m-d\\Th:i') }}"
-                               min="{{ "now"|date_modify("+1 day")|date('Y-m-d\\Th:i') }}"
+                               value="{{ "now"|date('Y-m-d\\Th:i') }}"
                                max="{{ "now"|date_modify("+2 years")|date('Y-m-d\\Th:i') }}"
                                class="form-control"
                         >
@@ -36,6 +35,7 @@
                         <input type="datetime-local"
                                id="{{ field_name(sortieForm.dateLimiteInscription) }}"
                                name="{{ field_name(sortieForm.dateLimiteInscription) }}"
+                               value="{{ "now"|date_modify("+7 days")|date('Y-m-d\\Th:i') }}"
                                min="{{ "now"|date_modify("+1 day")|date('Y-m-d\\Th:i') }}"
                                max="{{ "now"|date_modify("+2 years")|date('Y-m-d\\Th:i') }}"
                                class="form-control"
@@ -146,13 +146,13 @@
         <div class="row justify-content-center">
             <div class="col-1"></div>
             <div class="col-3">
-                {{ form_widget(sortieForm.creer) }}
+                {{ form_widget(sortieForm.bntEnregistrer) }}
             </div>
             <div class="col-3">
-                {{ form_widget(sortieForm.publier) }}
+                {{ form_widget(sortieForm.bntPublier) }}
             </div>
             <div class="col-3">
-                {{ form_widget(sortieForm.annuler) }}
+                {{ form_widget(sortieForm.btnAnnuler) }}
             </div>
         </div>
         {{ form_end(sortieForm) }}

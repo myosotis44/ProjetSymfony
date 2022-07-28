@@ -77,9 +77,6 @@ class OutServices
                     $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité Terminée']));
                     $this->sortieRepository->add($eachFilteredOut, true);
                 }
-                if ($eachFilteredOut->getOrganisateur() == $connectedUser) {
-                    $actions[] = 'Annuler';
-                }
 
             }
 

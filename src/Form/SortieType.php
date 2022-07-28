@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,7 +36,6 @@ class SortieType extends AbstractType
                 'label' => 'Date et heure de la sortie :',
                 'html5' => false,
                 'widget' => 'single_text',
-                'format' => 'dd MM yyyy',
                 'model_timezone' => 'Europe/Paris'
 
             ])
@@ -45,7 +43,6 @@ class SortieType extends AbstractType
                 'label' => 'Date limite d\'inscription :',
                 'html5' => false,
                 'widget' => 'single_text',
-                'format' => 'dd MM yyyy',
                 'model_timezone' => 'Europe/Paris'
             ])
             ->add('nbInscriptionsMax', IntegerType::class, [
@@ -71,15 +68,7 @@ class SortieType extends AbstractType
             ->add('lieu', TextType::class, [
                 'mapped' => false,
             ])
-            ->add('creer', SubmitType::class, [
-                'label' => 'Enregistrer',
-            ])
-            ->add('publier', SubmitType::class, [
-                'label' => 'Publier'
-            ])
-            ->add('annuler', SubmitType::class, [
-                'label' => 'Annuler'
-            ])
+
             ->addEventListener(
                 FormEvents::POST_SET_DATA,
                 function (FormEvent $event) {
@@ -132,15 +121,10 @@ class SortieType extends AbstractType
                             return $er->createQueryBuilder('l')
                                 ->where('l.ville = :val')
                                 ->setParameter('val', $id);
-                            //dump($newLieu->getQuery()->getFirstResult());
                         }
                     ]);
                     $ville = $this->entityManager->getRepository(Ville::class)->findBy(['id' => $id]);
-//                    dump($ville);
-//                    dump($id);
-//                    dump($form->getParent()->get('ville'));
                     $data = $this->entityManager->getRepository(Lieu::class)->findBy(['ville' => $ville]);
-                    //$data = $fullData->find($form->getParent()->get('lieu')->getData()->getId());
 
                     $form->getParent()->get('rue')->setData($data[0]->getRue());
                     $form->getParent()
@@ -153,10 +137,6 @@ class SortieType extends AbstractType
                         ->setData($data[0]->getVille()->getCodePostal());
                     $form->getParent()->get('latitude')->setData($data[0]->getLatitude());
                     $form->getParent()->get('longitude')->setData($data[0]->getLongitude());
-
-//                    dump($data);
-//                    dump($form->getParent()->get('lieu'));
-
                 }
             )
 
