@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1 class="text-center h1">Créer une sortie</h1>
-    <div class="col-10 m-auto my-5">
+    <div class="col-10 m-auto my-5 createForm">
         {{ form_start(sortieForm) }}
         <div class="row">
             <div class="col-6">
@@ -103,8 +103,14 @@
                     <div class="col-5">
                         {{ form_label(sortieForm.codePostal) }}
                     </div>
-                    <div class="col-7">
+                    <div class="col-3">
                         {{ form_widget(sortieForm.codePostal) }}
+                    </div>
+                    <div class="col-4">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            +
+                        </button>
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -128,16 +134,67 @@
         <div class="row justify-content-center">
             <div class="col-1"></div>
             <div class="col-3">
-                <input type="submit" class="btn btn-primary btn-lg" value="Enregistrer">
+                <input type="submit" name="Créer" class="btn btn-primary btn-lg" value="Enregistrer">
             </div>
             <div class="col-3">
-                <button class="btn btn-success btn-lg">Publier la sortie</button>
+                <button type="submit" name="Publier" class="btn btn-success btn-lg">Publier la sortie</button>
             </div>
             <div class="col-3">
-                <button class="btn btn-danger btn-lg">Annuler</button>
+                <button type="button" class="btn btn-danger btn-lg">Annuler</button>
             </div>
         </div>
         {{ form_end(sortieForm) }}
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Création d'un lieu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-10 m-auto">
+                        {{ form_start(lieuForm) }}
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_label(lieuForm.nom) }}
+                                {{ form_widget(lieuForm.nom) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_label(lieuForm.ville) }}
+                                {{ form_widget(lieuForm.ville) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form_label(lieuForm.rue) }}
+                                {{ form_widget(lieuForm.rue) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                {{ form_label(lieuForm.longitude) }}
+                                {{ form_widget(lieuForm.longitude) }}
+                            </div>
+                            <div class="col-6">
+                                {{ form_label(lieuForm.latitude) }}
+                                {{ form_widget(lieuForm.latitude) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Lieu</button>
+                </div>
+                {{ form_end(lieuForm) }}
+            </div>
+        </div>
     </div>
 {% endblock %}
 

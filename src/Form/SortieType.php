@@ -147,7 +147,6 @@ class SortieType extends AbstractType
 
                 }
             )
-
         ;
 
     }

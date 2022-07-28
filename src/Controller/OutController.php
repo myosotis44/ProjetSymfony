@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Form\CreationLieuType;
 use App\Form\Model\OutFilterFormModel;
 use App\Form\OutFilterFormType;
 use App\Form\SortieType;
@@ -56,6 +58,16 @@ class OutController extends AbstractController
                             EtatRepository $etatRepository,
                             LieuRepository $lieuRepository): Response {
 
+
+        $lieu = new Lieu();
+        $lieuForm = $this->createForm(CreationLieuType::class, $lieu);
+        $lieuForm->handleRequest($request);
+        if($lieuForm->isSubmitted() && $lieuForm->isValid()) {
+            $entityManager->persist($lieu);
+            $entityManager->flush();
+            $this->addFlash('success', 'Lieu ajoutée avec succès!');
+        }
+
         $sortie = new Sortie($this->getUser());
         $etatInitial = $etatRepository->findOneBy(['libelle'=>'En création']);
         $sortie->setEtat($etatInitial);
@@ -67,14 +79,21 @@ class OutController extends AbstractController
         $sortieForm->handleRequest($request);
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+
+            if($request->get('Publier') == "") {
+                $etatPublier = $etatRepository->findOneBy(['libelle'=>'Ouverte']);
+                $sortie = $sortie->setEtat($etatPublier);
+            }
             $entityManager->persist($sortie);
             $entityManager->flush();
 
             $this->addFlash('success', 'Sortie ajoutée avec succès!');
-            return $this->redirectToRoute('main_test');
+            return $this->redirectToRoute('main_home');
         }
+
         return $this->render('out/create.html.twig', [
-            'sortieForm' => $sortieForm->createView()
+            'sortieForm' => $sortieForm->createView(),
+            'lieuForm' => $lieuForm->createView()
         ]);
     }
 

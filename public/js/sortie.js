@@ -12,13 +12,12 @@ $(function() {
             type: $form.attr('method'),
             data : data,
             complete: function(html) {
-
-                    // Replace current lieu field ...
-                    $('#sortie_lieu').replaceWith(
-                        // ... with the returned one from the AJAX response.
-                        $(html.responseText).find('#sortie_lieu')
-                    );
-                    // Position field now displays the appropriate lieu.
+                // Replace current lieu field ...
+                $('#sortie_lieu').replaceWith(
+                    // ... with the returned one from the AJAX response.
+                    $(html.responseText).find('#sortie_lieu')
+                );
+                // Lieu field now displays the appropriate lieu.
 
                 $('#sortie_rue').replaceWith(
                     $(html.responseText).find('#sortie_rue')
@@ -49,11 +48,29 @@ $(function() {
             url : $form.attr('action'),
             type: $form.attr('method'),
             data : data,
-            complete: function(html) {
-                ajaxFunctions(1);
+            complete: function(html) {// Replace current lieu field ...
+                $('#sortie_lieu').replaceWith(
+                    // ... with the returned one from the AJAX response.
+                    $(html.responseText).find('#sortie_lieu')
+                );
+                // Lieu field now displays the appropriate lieu.
+
+                $('#sortie_rue').replaceWith(
+                    $(html.responseText).find('#sortie_rue')
+                );
+                $('#sortie_codePostal').replaceWith(
+                    $(html.responseText).find('#sortie_codePostal')
+                );
+                $('#sortie_latitude').replaceWith(
+                    $(html.responseText).find('#sortie_latitude')
+                );
+                $('#sortie_longitude').replaceWith(
+                    $(html.responseText).find('#sortie_longitude')
+                );
             }
         });
     })
+
 })
 
 function ajaxFunctions(p1) {
