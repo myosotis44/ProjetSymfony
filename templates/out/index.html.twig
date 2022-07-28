@@ -94,7 +94,7 @@
                                     <a href="{{ path('out_unsubscribe', {id: eachFilteredOut.id}) }}">{{ eachAction }}&nbsp;</a>
 
                                 {% elseif eachAction == 'Annuler' %}
-                                    <a href="{{ path('out_detail', {id: eachFilteredOut.id}) }}">{{ eachAction }}&nbsp;</a>
+                                    <a href="{{ path('out_cancel', {id: eachFilteredOut.id}) }}">{{ eachAction }}&nbsp;</a>
 
                                 {% elseif eachAction == 'S\'inscrire' %}
                                     <a href="{{ path('out_subscribe', {id: eachFilteredOut.id}) }}">{{ eachAction }}&nbsp;</a>

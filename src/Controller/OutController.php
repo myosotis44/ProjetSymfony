@@ -161,8 +161,8 @@ class OutController extends AbstractController
         if(!$sortie) {
             throw $this->createNotFoundException('Impossible de se désinscrire car cette sortie n\'existe pas');
         }
-        elseif ($sortie->getEtat()->getLibelle() != 'Ouverte') {
-            throw $this->createNotFoundException('Impossible de se désinscire d\'une sortie qui n\'est plus ouverte !!');
+        elseif ($sortie->getEtat()->getLibelle() != 'Ouverte' && $sortie->getEtat()->getLibelle() != 'Clôturée') {
+            throw $this->createNotFoundException('Impossible de se désinscire d\'une sortie qui n\'est plus ouverte ou cloturée!!');
         }
 
         $sortie->removeParticipant($this->getUser());
@@ -191,7 +191,6 @@ class OutController extends AbstractController
         elseif ($sortie->getEtat()->getLibelle() != 'En création') {
             throw $this->createNotFoundException('Impossible de modifier une sortie qui n\'est plus en état de Création !!');
         }
-
 
         $sortieForm = $this->createForm(SortieType::class, $sortie)
             ->add('bntEnregistrer', SubmitType::class, [
@@ -222,7 +221,9 @@ class OutController extends AbstractController
             return $this->redirectToRoute('out_index');
         }
         elseif ($sortieForm->get('btnAnnuler')->isClicked()) {
-            return $this->redirectToRoute('out_index');
+            return $this->render('out/cancel.html.twig', [
+                'sortie' => $sortie
+            ]);
         }
         elseif ($sortieForm->get('bntEnregistrer')->isSubmitted() && $sortieForm->isValid()) {
             $sortieRepository->add($sortie, true);
@@ -232,6 +233,26 @@ class OutController extends AbstractController
 
         return $this->render('out/edit.html.twig', [
             'sortieForm' => $sortieForm->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/cancel", name="cancel")
+     */
+    public function cancel(SortieRepository $sortieRepository, int $id) : Response {
+
+        $sortie = $sortieRepository->find($id);
+
+        if(!$sortie) {
+            throw $this->createNotFoundException('Impossible d\'annuler cette sortie car elle n\'existe pas');
+        }
+        elseif ($sortie->getEtat()->getLibelle() != 'Clôturée' && $sortie->getEtat()->getLibelle() != 'Activité en cours') {
+            throw $this->createNotFoundException('Impossible d\'annuler une activité qui n\'est pas encore en cours !!');
+        }
+
+        return $this->render('out/cancel.html.twig', [
+            'sortie' => $sortie
         ]);
     }
 

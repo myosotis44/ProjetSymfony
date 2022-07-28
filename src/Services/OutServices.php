@@ -35,7 +35,6 @@ class OutServices
             if ($eachFilteredOut->getEtat()->getLibelle() === 'Ouverte') {
 
                 if (new \DateTime() > $eachFilteredOut->getDateLimiteInscription()) {
-
                     $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Clôturée']));
                     $this->sortieRepository->add($eachFilteredOut, true);
                 }
@@ -78,6 +77,10 @@ class OutServices
                     $eachFilteredOut->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité Terminée']));
                     $this->sortieRepository->add($eachFilteredOut, true);
                 }
+                if ($eachFilteredOut->getOrganisateur() == $connectedUser) {
+                    $actions[] = 'Annuler';
+                }
+
             }
 
             if ($eachFilteredOut->getEtat()->getLibelle() === 'Activité Terminée' ||
