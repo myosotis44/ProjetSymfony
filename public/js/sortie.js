@@ -13,12 +13,25 @@ $(function() {
             type: $form.attr('method'),
             data : data,
             complete: function(html) {
-                // Replace current position field ...
+                // Replace current lieu field ...
                 $('#sortie_lieu').replaceWith(
                     // ... with the returned one from the AJAX response.
                     $(html.responseText).find('#sortie_lieu')
                 );
-                // Position field now displays the appropriate positions.
+                // Position field now displays the appropriate lieu.
+
+                $('#sortie_rue').replaceWith(
+                    $(html.responseText).find('#sortie_rue')
+                );
+                $('#sortie_codePostal').replaceWith(
+                    $(html.responseText).find('#sortie_codePostal')
+                );
+                $('#sortie_latitude').replaceWith(
+                    $(html.responseText).find('#sortie_latitude')
+                );
+                $('#sortie_longitude').replaceWith(
+                    $(html.responseText).find('#sortie_longitude')
+                );
             }
         });
     })

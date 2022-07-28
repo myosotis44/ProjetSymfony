@@ -125,12 +125,8 @@ class SortieType extends AbstractType
                     ]);
                     $fullData = $this->entityManager->getRepository(Lieu::class);
                     $data = $fullData->find($form->getParent()->get('lieu')->getData()->getId());
-                    dump($data);
-                    dump($data->getRue());
-                    dump($form->getParent());
                     $form->getParent()->get('rue')->setData($data->getRue());
                     $form->getParent()
-                        ->remove('codePostal')
                         ->add('codePostal', TextType::class, [
                             'label' => 'Code Postal:',
                             'mapped' => false,
@@ -140,7 +136,7 @@ class SortieType extends AbstractType
                         ->setData($data->getVille()->getCodePostal());
                     $form->getParent()->get('latitude')->setData($data->getLatitude());
                     $form->getParent()->get('longitude')->setData($data->getLongitude());
-                    dump($form->getParent());
+                    dump($data);
 
                 }
             );

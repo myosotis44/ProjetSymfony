@@ -37,6 +37,9 @@ class OutController extends AbstractController
             $filteredOuts = $sortieRepository->outFilterDQLGenerator($filter, $this->getUser());
             $filteredOuts = $outServices->actionsFilter($filteredOuts, $this->getUser());
         }
+        else {
+            $filteredOuts = $sortieRepository->returnActive();
+        }
 
         return $this->render('out/index.html.twig', [
             'filterForm' => $filterForm->createView(),

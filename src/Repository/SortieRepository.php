@@ -95,6 +95,23 @@ class SortieRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @return Sortie[] Returns an array of Sortie objects
+     */
+    public function returnActive(): array
+    {
+        $list = ["En création","Ouverte","Activité en cours","Activité Terminée"];
+        dump($this->createQueryBuilder('s')
+            ->where('s.etat_id IN(:list)')
+            ->setParameter('list', array_values($list))
+            ->getQuery());
+        return $this->createQueryBuilder('s')
+            ->where('s.etat IN(:list)')
+            ->setParameter('list', $list)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Sortie[] Returns an array of Sortie objects
 //     */
