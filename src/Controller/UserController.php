@@ -34,9 +34,12 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}/update", name="user_update")
      */
-    public function updateProfil(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger,
+    public function updateProfil(Request $request,
+                                 EntityManagerInterface $entityManager,
+                                 SluggerInterface $slugger,
                                  ParticipantRepository $participantRepository,
-                                 UserPasswordHasherInterface $userPasswordHasher, int $id): Response
+                                 UserPasswordHasherInterface $userPasswordHasher,
+                                 int $id): Response
     {
         $user = $participantRepository->find($id);
 
@@ -50,7 +53,6 @@ class UserController extends AbstractController
         $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
 
-        //$confirmPswd = $user->getPassword() === $userForm->get('confirmation')->getData();
 
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $user->setPassword(

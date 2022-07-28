@@ -1,17 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-sm-5 col-xs-10 m-auto">
+    <div class="col-sm-6 col-xs-10 m-auto">
         <div class="mt-3 mb-5 bg-light border rounded p-3 text-monospace text-center">
     <h1>Ajout utilisateur</h1>
         </div>
     {{ form_start(userForm, {attr: {novalidate: 'novalidate'}}) }}
+        <div class="card p-5 bg-light">
+        <div class="row">
+        <div class="col-6">
+        <div class="col-12">
+        {{ form_row(userForm.pseudo) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(userForm.prenom) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(userForm.nom) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(userForm.telephone) }}
+        </div>
+        </div>
+        <div class="col-6">
+            <div class="col-12">
+                {{ form_row(userForm.mail) }}
+            </div>
+        <div class="col-12">
+            {{ form_row(userForm.password) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(userForm.confirmation) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(userForm.campus) }}
+        </div>
+        </div>
+            <div class="col-12">
+                {{ form_row(userForm.imageFile) }}
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                <button type="submit" class="btn btn-outline-primary mx-3">Enregistrer</button>
+                <button type="reset" class="btn btn-outline-secondary">Annuler</button>
+            </div>
+        </div>
+        </div>
     {{ form_widget(userForm) }}
         </div>
-        <div class="d-flex justify-content-center mt-5">
-        <button type="submit" class="btn btn-outline-primary mx-3">Enregistrer</button>
-        <button type="reset" class="btn btn-outline-secondary">Annuler</button>
-        </div>
+
     </div>
     {{ form_end(userForm) }}
 {% endblock %}
