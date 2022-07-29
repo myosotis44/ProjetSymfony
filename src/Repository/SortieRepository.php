@@ -47,16 +47,19 @@ class SortieRepository extends ServiceEntityRepository
 
         if (in_array('ChkSub', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
-                ->join('o.participants', 'p')
+                ->Join('o.participants', 'p')
                 ->andWhere('p.mail = :connectedUserMail')
                 ->setParameter('connectedUserMail', $connectedUser->getMail());
         }
 
         if (in_array('ChkNotSub', $outFilterFormModel->outFilterChk)) {
             $queryBuilder
-                ->innerJoin('o.participants', 'q')
-                ->andWhere('q.mail != :connectedUserMail')
-                ->setParameter('connectedUserMail', $connectedUser->getMail());
+//marche aussi    ->leftJoin('o.participants', 'q')
+//marche aussi    ->addSelect('q')
+//marche aussi    ->andWhere('q.mail IS NULL');
+                ->leftJoin('o.participants', 'q')
+                ->andWhere(':connectedUser not member of o.participants')
+                ->setParameter('connectedUser', $connectedUser);
         }
 
         if (in_array('ChkOrg', $outFilterFormModel->outFilterChk)) {
